@@ -1,7 +1,7 @@
 
 #==========================  2023-09-02    ===================================================
 from tkinter import *
-testcode = '7.7'
+testcode = '8.1'
 if testcode == '3.1':
     #set window title
     win = Tk()
@@ -919,5 +919,53 @@ elif testcode == '7.7':
         win.mainloop()
     else:
         pass
+elif testcode == '7.8':
+    from tkinter.ttk import *
+    def getMon(a):
+        items = monOpiton.get()
+        if items == '4' or items == '6' or items == '9' or items == '11':
+            b = tuple(range(1,31))
+        elif items == '2':
+            b = tuple(range(1,29))
+        else:
+            b = tuple(range(1,32))
+        dateOption['values'] = b
+        pass
+    def getDate():
+        info = label3.cget('text')
+        temp = monOpiton.get() + '月' + dateOption.get() + '日：\t' + text.get('0.0', END)
+        label3.config(text=info + temp)
+        text.delete('0.0',  END)
+        pass
+    win = Tk()
+    win.title('添加日程')
+    number = StringVar()
+    a = tuple(range(1,13))
+    monOpiton = Combobox(win, width=5, textvariable=number, values=a)
+    monOpiton.current(0)
+    monOpiton.grid(row=1, column=0, sticky='E', columnspan=2)
+    monOpiton.bind('<<ComboboxSelected>>',getMon)
+    label1 = Label(win,text='月').grid(row=1, column=2,sticky=W)
+    b = tuple(range(1,32))
+    dateOption = Combobox(win,width=5, values=b)
+    dateOption.current(0)
+    dateOption.grid(row=1, column=3, pady=10, columnspan=2)
+    label2 = Label(win, text='日').grid(row=1, column=5,sticky='w')
+    text = Text(win, width=40, height=10)
+    text.grid(row=2, columnspan=8)
+    button = Button(win, text='确定', command=getDate).grid(row=3, columnspan=8)
+    label3 = Label(win)
+    label3.grid(row=4, columnspan=8)
+    win.mainloop()
+elif testcode == '8.1':
+    win = Tk()
+    win.geometry('360x180')
+    for i in range(6):
+        if i %2 == 0:
+            Frame(bg = '#b1ffbb',width=60, height=40,cursor='cross').grid(row=0,column=i,pady=10)
+        else:
+            Frame(bg='#ffd9c5',width=60,height=40,cursor='plus').grid(row=0,column=i,pady=20)
+    win.mainloop()
+
 else:
     print('not testcode number define')
