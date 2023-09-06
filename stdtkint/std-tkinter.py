@@ -1,7 +1,10 @@
 
 #==========================  2023-09-02    ===================================================
 from tkinter import *
-testcode = '8.1'
+from random import *
+from tkinter.ttk import  *
+from tkinter.messagebox import *
+testcode = '9.9'
 if testcode == '3.1':
     #set window title
     win = Tk()
@@ -958,14 +961,321 @@ elif testcode == '7.8':
     label3.grid(row=4, columnspan=8)
     win.mainloop()
 elif testcode == '8.1':
+    subtest = 1
+    if subtest == 1:
+        win = Tk()
+        win.geometry('360x180')
+        for i in range(6):
+            if i %2 == 0:
+                Frame(bg = '#b1ffbb',width=60, height=40,cursor='cross').grid(row=0,column=i,pady=10)
+            else:
+                Frame(bg='#ffd9c5',width=60,height=40,cursor='plus').grid(row=0,column=i,pady=20)
+        win.mainloop()
+    else:
+        win = Tk()
+        win.geometry('360x120')
+        box = Frame(width=100, height=100, relief='groove',borderwidth=5)
+        box.grid(row=0, column=0,pady=10,padx=10)
+        txt= '小明去钓鱼，结果6条无头，8条只有半个身子，9条无尾巴，请问小明一共钓了几条鱼？'
+        Label(box, text=txt, wraplength=320,justify='left',font=14).grid(columnspan=4)
+        select=['8条','6条','9条','0条']
+        val = IntVar()
+        for i in range(len(select)):
+            Radiobutton(box,text=select[i], value=i, variable=val).grid(row=1,column=i)
+        win.mainloop()
+elif testcode == '8.2':
+    from tkinter.ttk import *
     win = Tk()
-    win.geometry('360x180')
-    for i in range(6):
-        if i %2 == 0:
-            Frame(bg = '#b1ffbb',width=60, height=40,cursor='cross').grid(row=0,column=i,pady=10)
-        else:
-            Frame(bg='#ffd9c5',width=60,height=40,cursor='plus').grid(row=0,column=i,pady=20)
+    win.title('长春市轨道交通1号线')
+    win.configure(background='#afebe5')
+    sty1= Style()
+    sty1.configure('BW.TLabel',foreground='#fff',background='red')
+    sty2= Style()
+    sty2.configure('BW.TFrame',background='#afebe5')
+    win.geometry('250x200')
+    win.configure(bg='#afebe5')
+    left = Frame(win, style='BW.TLabel',width=260)
+    left.pack(side=LEFT)
+    Label(left, text='2020-03-08',background='red',foreground='#fff').pack()
+    Label(left, text='06:49', background='red', foreground='#fff').pack()
+    Label(left, text='星期一 sun', background='red', foreground='#fff').pack()
+    Separator(left, orient=HORIZONTAL).pack(side=TOP, fill=X)
+    Label(left, text='本站', background='red', foreground='#fff').pack(ipady=5)
+    Label(left, text='解放大路', background='red', foreground='#fff').pack(ipady=5)
+    Separator(left, orient=HORIZONTAL).pack(side=TOP, fill=X)
+    Label(left, text='前进方向', background='red', foreground='#fff').pack(ipady=5)
+    Label(left, text='东环城路', background='red', foreground='#fff').pack(ipady=5)
+    right = Frame(win, width=260,style='BW.TFrame')
+    right.pack(side=LEFT)
+    Label(right, text='请排队上下车先下后上',background='#aebbe5',justify='center',wraplength=100, font=16).pack(padx=40)
     win.mainloop()
-
+elif testcode == '8.3':
+    subtest = 2
+    if subtest == 1:
+        def all():
+            print(checkbox)
+            for index, item in enumerate(checkbox):
+                item.set(True)
+        def none():
+            for inext, item in enumerate(checkbox):
+                item.set(False)
+        def inverse():
+            for index, item in enumerate(checkbox):
+                if item.get() == False:
+                    item.set(True)
+                else:
+                    item.set(False)
+        win = Tk()
+        frame1 = Frame(win, width=200, height=50)
+        frame1.grid(row=0, column=0)
+        frame2 = Frame()
+        frame2.grid(row=1,column=0)
+        val = BooleanVar()
+        val.set(1)
+        radio1 = Radiobutton(frame1, value=0, variable=val, text='全选',command=all)
+        radio1.grid(row=0, column=0)
+        radio2 = Radiobutton(frame1, value=1, variable=val, text='全不选',command=none)
+        radio2.grid(row=0, column=1)
+        radio3 = Radiobutton(frame1, value=2, variable=val, text='反选', command=inverse)
+        radio3.grid(row=0, column=3)
+        fruits = ['苹果', '香蕉','苹果','草莓','柠檬']
+        checkbox = []
+        for index, item in enumerate(fruits):
+            str = BooleanVar()
+            str.set(False)
+            Checkbutton(frame2, text=item, variable=str).grid(row=index+1, column=1)
+            checkbox.append(str)
+        win.mainloop()
+    else:
+        win = Tk()
+        labelframe = LabelFrame(win, text='选择你的出站英雄')
+        labelframe.grid(row=0,ipadx=10,ipady=10,column=1)
+        hero = StringVar()
+        hero.set('貂蝉')
+        Radiobutton(labelframe, variable=hero, text='貂蝉',value='貂蝉').grid(row=1, column=1)
+        Radiobutton(labelframe, variable=hero, text='吕布', value='吕布').grid(row=2, column=1)
+        Radiobutton(labelframe, variable=hero, text='小乔', value='小乔').grid(row=3, column=1)
+        Radiobutton(labelframe, variable=hero, text='周瑜', value='周瑜').grid(row=4, column=1)
+        win.mainloop()
+elif testcode == '8.4':
+    def duihuan():
+        txt = entry.get()
+        if len(txt)> 0:
+            re.config(text='兑换成功！')
+        else:
+            re.config(text='兑换码无效')
+        re.grid(row=4, column=2)
+    win = Tk()
+    win.geometry('270x220')
+    labelframe = LabelFrame(win, text='礼品兑换', bg='#fff5d7',padx=20,pady=10,font=14)
+    labelframe.grid(row=0,ipadx=10,ipady=10,column=1)
+    img = PhotoImage(file=r'.\pict\cat.png')
+    Label(labelframe, image=img, bg='#fff5d7').grid(row=1, column=2)
+    Label(labelframe, text='兑换码',bg='#fff5d7').grid(row=2, column=1,pady=10)
+    entry=Entry(labelframe)
+    entry.grid(row=2, column=2,pady=10)
+    Button(labelframe,text='确认对换',borderwidth=1,bg='#4eb1ff',command=duihuan).grid(row=3, column=2)
+    re = Label(labelframe, bg='#fff5d7',font=16,fg='red')
+    win.mainloop()
+elif testcode == '8.5':
+    subtest = 2
+    if subtest == 1:
+        def creat():
+            top = Toplevel()
+            top.geometry('150x150')
+            top.title('创建顶层窗口')
+            top.configure(bg='#d8ebb8')
+            Label(top, text='这是toplevel组件窗口').pack()
+            pass
+        win1 = Tk()
+        win1.geometry('200x200')
+        win1.configure(bg='#f7d7c4')
+        Button(win1, text='创建顶层窗口', command=creat).pack()
+        win1.mainloop()
+    else:
+        def begin():
+            win2 = Toplevel()
+            win2.geometry('200x120')
+            win2.configure(bg='#ffacab')
+            win2.title('准备游戏')
+            Label(win2, text='玩家已就位，请准备', font=14,bg='#ffacab').pack(pady=50)
+            pass
+        def change():
+            win2 = Toplevel()
+            win2.geometry('200x120')
+            win2.configure(bg='#ffacab')
+            win2.title('2号棋牌室')
+            Label(win2, text='欢迎进入2号棋牌室', font=14, bg='#ffacab', width=35).pack(side='top',fill=X)
+            Label(win2, text='玩家已就位，请准备', font=16, bg='#ffacab', width=35).pack(pady=20,side='top', fill=X)
+            pass
+        win1 = Tk()
+        win1.geometry('270x220')
+        win1.title('1号棋牌室')
+        win1.configure(bg='#ffcd63')
+        label=Label(win1, text='欢迎进入1号棋牌室',background='#fffbb5',font=14,width=35)
+        label.grid(row=0, column=0, columnspan=5, ipady=8)
+        btn1 = Button(win1, text='开始对局',background='#35a837', command=begin)
+        btn1.grid(row=2, column=1,pady=10)
+        btn2 = Button(win1, text='更换房间', background='#ff4a4f', command=change)
+        btn2.grid(row=2, column=3,pady=10)
+        win1.mainloop()
+elif testcode == '8.6':
+    panewindow = PanedWindow(sashrelief= SUNKEN, background='#1df5df',width=200)
+    panewindow.pack()
+    btn1 = Button(panewindow, text='左侧按钮', state='disabled')
+    panewindow.add(btn1)
+    btn2 = Button(panewindow, text='右侧按钮', state='disabled')
+    panewindow.add(btn2)
+    mainloop()
+elif testcode == '8.7':
+    from tkinter.ttk import *
+    win = Tk()
+    win.title('日期和时间')
+    note = Notebook(win, width=250, height=150)
+    pane1 = Frame()
+    Button(pane1, text='更改日期时间').pack(pady=20)
+    pane2= LabelFrame()
+    Checkbutton(pane2, text='显示此时钟', variable=StringVar()).pack(pady=20)
+    pane3 = Frame()
+    Button(pane3, text='更改设置').pack(pady=20)
+    note.add(pane1, text='日期和时间')
+    note.add(pane2, text='附加时钟')
+    note.add(pane3, text='Internet时间')
+    note.pack()
+    win.mainloop()
+elif testcode == '8.8':
+    from tkinter.ttk import *
+    win = Tk()
+    note = Notebook(win, width=300, height= 200)
+    pane1 = Frame()
+    img1 = PhotoImage(file=r'pict\pane1.png')
+    Label(pane1, image= img1).pack()
+    Label(pane1, text='脑洞大不大，一问便知').pack(pady=20)
+    Button(pane1, text='现在就玩', state='DISABLE').pack()
+    pane2 = Frame()
+    img2 = PhotoImage(file=r'pict\pane2.png')
+    Label(pane2, image=img2).pack()
+    Label(pane2, text='抽象派还是形象派，你到底是哪一派').pack(pady=20)
+    Button(pane2, text='现在就玩', state='DISABLE').pack()
+    note.add(pane1, text='最强的大脑')
+    note.add(pane2, text='水泼墨画')
+    note.pack()
+    win.mainloop()
+elif testcode == '9.1':
+    i=0
+    def mess():
+        global i
+        textleft = enc.get()
+        Message(box, text=textleft, bg='#cbede9', width=140).grid(row=i,column=0,sticky=W)
+        Message(box, text='你说：'+ textleft,bg='#fee2b8',width=140).grid(row=i+1, column=2)
+        i+=2
+        pass
+    win = Tk()
+    win.geometry('300x230')
+    box = Frame(width=300, height=200)
+    box.place(x=0,y=0)
+    info = Frame(width=250, height=20)
+    info.place(x=40,y=200)
+    enc = Entry(info)
+    enc.pack(side=LEFT, fill=BOTH)
+    btn = Button(info, text='发送', command=mess).pack(side=LEFT)
+    win.mainloop()
+elif testcode == '9.2':
+    def coll():
+        a = randint(0, 6)
+        mess.config(fg='#f00')
+        if a==0:
+            text = '恭喜获得敬业福一张'
+        elif a == 1:
+            text = '恭喜获得友善福一张'
+        elif a == 2:
+            text = '恭喜获得爱国福一张'
+        elif a == 3:
+            text = '恭喜获得和谐福一张'
+        elif a == 4:
+            text = '恭喜获得富强福一张'
+        else:
+            text = '很遗憾，什么都没有'
+            mess.config(fg='#000')
+        val.set('\n' + text + '\n')
+        mess.pack()
+    pass
+    win = Tk()
+    win.geometry('300x230')
+    win.title('集福卡')
+    val = StringVar()
+    mess = Message(win, textvariable=val, font=14,aspect=350, fg='red')
+    Button(win, text='集福卡', command=coll).pack(side=TOP)
+    win.mainloop()
+elif testcode == '9.3':
+    def mess():
+        showinfo('welcome', '好久不见，欢迎回归')
+        pass
+    from tkinter.messagebox import *
+    win = Tk()
+    Button(win, text='进入游戏', command=mess).pack(padx=20, pady=20)
+    win.mainloop()
+elif testcode == '9.4':
+    from tkinter.messagebox import *
+    def mess():
+        showwarning('警告','您正在退出游戏，退出后所有积分将清零')
+        pass
+    win = Tk()
+    win.title('警告会话框')
+    Button(win, text='退出游戏', command=mess).pack(padx=20,pady=20)
+    win.mainloop()
+elif testcode == '9.5':
+    from tkinter.messagebox import *
+    def mess():
+        showerror('错误提醒','游戏请求开启摄像头权限')
+        pass
+    win = Tk()
+    win.title('警告会话框')
+    Button(win, text='退出游戏', command=mess).pack(padx=20, pady=20)
+    win.mainloop()
+elif testcode == '9.6':
+    def mess():
+        boo = askokcancel('关闭提醒','您正在关闭窗口，点击确定可以关闭窗口')
+        if boo == True:
+            win.quit()
+        pass
+    win = Tk()
+    win.title('关闭会话框')
+    Button(win, text='关闭窗口', command=mess).pack(padx=20, pady=20)
+    win.mainloop()
+elif testcode == '9.7':
+    def mess():
+        boo = askyesno('关闭提醒','您正在关闭主窗口，点击确定可以关闭主窗口')
+        if boo == True:
+            win.quit()
+        pass
+    win = Tk()
+    win.title('关闭会话框')
+    Button(win, text='关闭窗口', command=mess).pack(padx=20, pady=20)
+    win.mainloop()
+elif testcode == '9.8':
+    def mess():
+        boo = askyesnocancel('退出提醒','您正在退出程序，点击‘是’可以退出程序，点击‘否’后台运行程序，点击‘取消’关闭会话框')
+        if boo == True:
+            win.quit()
+        elif boo== False:
+            win.iconify()
+        pass
+    win = Tk()
+    win.title('退出会话框')
+    Button(win, text='退出程序', command=mess).pack(padx=20, pady=20)
+    win.mainloop()
+elif testcode == '9.9':
+    def mess():
+        boo = askretrycancel('重试提醒','打开游戏出现错误，选择"重试"或"取消"')
+        if boo == True:
+            mess()
+        else:
+            win.quit()
+        pass
+    win = Tk()
+    win.title('询问重试或取消会话框')
+    Button(win, text='打开游戏', command=mess).pack(padx=20, pady=20)
+    win.mainloop()
 else:
     print('not testcode number define')
