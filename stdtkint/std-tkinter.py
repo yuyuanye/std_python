@@ -4,7 +4,7 @@ from tkinter import *
 from random import *
 from tkinter.ttk import  *
 from tkinter.messagebox import *
-testcode = '9.9'
+testcode = '10.9'
 if testcode == '3.1':
     #set window title
     win = Tk()
@@ -1277,5 +1277,339 @@ elif testcode == '9.9':
     win.title('询问重试或取消会话框')
     Button(win, text='打开游戏', command=mess).pack(padx=20, pady=20)
     win.mainloop()
+elif testcode == '10.1':
+    win = Tk()
+    win.title('为游戏窗口添加菜单')
+    menu1 = Menu(win)
+    menu1.add_command(label='游戏')
+    menu1.add_command(label='帮助')
+    menu1.add_command(label='退出')
+    win.config(menu=menu1)
+    win.mainloop()
+elif testcode == '10.2':
+    def help():
+        showwarning('提醒','第四行')
+        pass
+    def game():
+        boo = askyesnocancel('暂停','是否停止本游戏，点击是，重新开始，点击否，暂停游戏')
+        if boo == True:
+            i = 0
+        else:
+            i=84
+        label.config(text=i)
+        pass
+    i = 84
+    def wrong():
+        global i
+        i -=1
+        label.config(text=i)
+        pass
+    def suc():
+        top = Toplevel(win)
+        Label(top, text='恭喜找到了\n得分为' + str(i), foreground='red').grid(row=0, column=0, padx=10, pady=10)
+        pass
+    win = Tk()
+    win.title('为游戏窗口添加菜单')
+    menu1 = Menu(win)
+    menu1.add_command(label='游戏', command=game)
+    menu1.add_command(label='帮助',command=help)
+    menu1.add_command(label='退出',command=win.quit)
+    win.config(menu=menu1)
+    for c in range(6):
+        for j in range(14):
+            #if i == 3 and j ==3:
+                #continue
+            Button(win, text='大',width=2, command=wrong).grid(row=c, column=j)
+    Button(win, text= '女',width=2,command=suc).grid(row=3,column=3)
+    label = Label(win, font=14, foreground='red', text=84)
+    label.grid(row=8, column=0, columnspan=14)
+    win.mainloop()
+elif testcode == '10.3':
+    def pop1():
+        menu2_2.post(win.winfo_x()+60,win.winfo_y()+120)
+        pass
+    win = Tk()
+    menu1 = Menu(win)
+    menu2_1 = Menu(menu1, tearoff=False)
+    menu1.add_cascade(label='城市',menu=menu2_1)
+    menu2_1.add_command(label='北京')
+    menu2_1.add_command(label='上海')
+    menu2_1.add_command(label='重庆')
+    menu2_1.add_command(label='广州')
+    menu2_1.add_command(label='深圳')
+    menu1.add_command(label='修改',command=pop1)
+    menu2_2=Menu(menu1, tearoff=False)
+    menu2_2.add_command(label='添加城市')
+    menu2_2.add_command(label='修改城市')
+    menu1.add_command(label='退出',command=win.quit)
+    win.config(menu=menu1)
+    win.mainloop()
+elif testcode == '10.4':
+    def max_win(event):
+        win.geometry('600x400')
+        pass
+    def normal_win(event):
+        win.geometry('300x200')
+        pass
+    def txt():
+        global val
+        global font_size
+        global top
+        top = Toplevel(win)
+        val = StringVar()
+        val.set('宋体')
+        font_family=('宋体','黑体','方正舒体','楷体','隶书','方正姚体')
+        family = Combobox(top, textvariable=val, values=font_family)
+        family.grid(row=0, column=0)
+        font_size = Spinbox(top, from_=12, to=30, increment=2, width=10)
+        font_size.grid(row=0, column=1)
+        btn1 = Button(top, text='确定',command=font_set)
+        btn1.grid(row=1, column=1)
+        pass
+    def font_set():
+        font1 = (val.get(), font_size.get())
+        label.config(font=font1)
+        pass
+    win = Tk()
+    win.geometry('300x200')
+    menu1 = Menu(win)
+    menu2_1 = Menu(menu1)
+    menu1.add_cascade(label='窗体', menu=menu2_1)
+    menu2_1.add_command(label='最大化', accelerator='Ctrl+Up', command=lambda :max_win(''))
+    menu2_1.add_command(label='中等窗口', accelerator='Ctrl+Down',command= lambda :normal_win(''))
+    menu2_1.add_command(label='最小化', command=win.iconify)
+    menu2_1.add_separator()
+    menu2_1.add_command(label='关闭', command=win.quit)
+    menu2_2 = Menu(menu1, tearoff=0)
+    menu1.add_cascade(label='自定义', menu=menu2_2)
+    menu2_2.add_command(label='字体设置', command=txt)
+    win.config(menu=menu1)
+
+    label = Label(win, text='这是一个窗口')
+    label.grid(row=0, column=0)
+    win.bind_all('<Control-Up>', max_win)
+    win.bind_all('<Control-Down>', normal_win)
+    win.mainloop()
+elif testcode == '10.5':
+    num = 0
+    idiom = ['别出心裁', '白云苍狗', '暴虎冯河', '鞭长莫及']
+    idiom_means = ['独出巧思，不同流俗', '比喻世事变化无常', '比喻有勇无谋，鲁莽冒险', '本意为马鞭子再长也打不到马肚子']
+
+    def panduan():
+        global num
+        a = entry.get()
+        if a == idiom[num]:
+            num += 1
+        if (num > len(idiom)):
+            boo = askyesno('成功过关', '恭喜，已完成所有关卡，是否重新开始？')
+            if boo == True:
+                num = 0
+                panduan()
+            else:
+                win.quit()
+        entry.delete(0, END)
+        means.config(text=idiom_means[num])
+        level.config(text='第' + str(num + 1) + '关')
+
+    def next(event):
+        global num
+        num += 1
+        if (num >= len(idiom)):
+            num = 0
+        panduan()
+
+
+    def restart(event):
+        global num
+        num = 0
+        panduan()
+
+
+    def show1():
+        showinfo('游戏规则', '根据成语含义猜成语，正确则自动跳转至下一关')
+
+
+    def tip():
+        str = idiom[num][0]
+        entry.delete(0, END)
+        entry.insert(0, str)
+
+    win = Tk()
+    win.geometry('250x200')
+    win.title('成语猜猜猜')
+    menu1 = Menu(win)
+    menu2_1 = Menu(menu1)
+    menu1.add_cascade(label='游戏',menu=menu2_1)
+    menu2_1.add_command(label='下一关', command= lambda :next(''), accelerator='Ctrl+N')
+    menu2_1.add_command(label='重新开始', command= lambda :restart(''), accelerator='Ctrl+R')
+    menu2_1.add_separator()
+    menu2_1.add_command(label='退出', command=win.quit)
+    menu2_2 = Menu(menu1)
+    menu1.add_cascade(label='帮助',menu=menu2_2)
+    menu2_2.add_command(label='游戏规则',command=show1)
+    menu2_2.add_command(label='提示',command=tip)
+    win.config(menu=menu1)
+
+    level = Label(win, font=14, text='第1关')
+    level.grid(row=0, column=0, columnspan=4, sticky=E)
+    means = Label(win, text=idiom_means[0],font=14, width=30,background='#d8f3f0',wraplength=200)
+    means.grid(row=1, column=0,pady=10,columnspan=4)
+    entry =Entry(win, font=14)
+    entry.grid(row=2, column=1, sticky=E)
+    btn = Button(win, text='确定',command=panduan).grid(row=2, column=2)
+    win.bind_all('<Control-n>',next)
+    win.bind_all('<Control-r>', restart)
+    win.mainloop()
+elif testcode == '10.6':
+    win = Tk()
+    tree = Treeview(win, columns=('hero','type','operate'),show='headings',displaycolumns=(0,1,2))
+    tree.heading('hero', text='英雄', anchor='center')
+    tree.heading('type', text='类型', anchor='center')
+    tree.heading('operate', text='操作难易程度', anchor='center')
+    tree.insert('', END, values=('孙尚香','射手','5'))
+    tree.insert('', END, values=('孙策','战士', '3'))
+    tree.insert('', END, values=('大乔','辅助', '3'))
+    tree.insert('', END, values=('小乔','法师', '3'))
+    tree.pack()
+    win.mainloop()
+elif testcode == '10.7':
+    subtest = 2
+    if subtest == 1:
+        win = Tk()
+        tree = Treeview(win, columns=('date','temperature'))
+        tree.heading('#0', text='天气')
+        tree.heading('date', text='日期')
+        tree.heading('temperature', text='气温')
+        rain = PhotoImage(file=r'.\pict\rainheardly.png')
+        storm = PhotoImage(file=r'.\pict\storm.png')
+        sunny = PhotoImage(file=r'.\pict\sunny.png')
+        tree.insert('', END, values=('4月1日', '-3~5'), image=rain, text='中到暴雨')
+        tree.insert('', END, values=('4月2日', '-3~5'), image=sunny, text='晴')
+        tree.insert('', END, values=('4月3日', '-3~5'), image=storm, text='雷阵雨')
+        tree.insert('', END, values=('4月4日', '-3~5'), image=sunny, text='晴')
+        tree.insert('', END, values=('4月5日', '-3~5'), image=sunny, text='晴')
+        tree.insert('', END, values=('4月6日', '-3~5'), image=sunny, text='晴')
+        tree.insert('', END, values=('4月7日', '-3~5'), image=rain, text='晴')
+        tree.pack()
+        win.mainloop()
+    else:
+        win = Tk()
+        tree = Treeview(win)
+        tree.heading('#0', text='皇帝')
+        tree.insert('', 0, 'wei', text='魏')
+        shu = tree.insert('',1,text='蜀')
+        wu = tree.insert('', 2, text='吴')
+        tree.insert('wei', 0, text='曹操')
+        tree.insert(shu, 0, text='刘备')
+        tree.insert(wu, 0, text='孙权')
+        tree.pack()
+        win.mainloop()
+elif testcode == '10.8':
+    win = Tk()
+    #win.geometry('900x400')
+    tree = Treeview(win, columns=('score'))
+    tree.heading('#0', text='小组',anchor=W)
+    score1={'R001':'20','R002':'19','R003':'19','R004':'16'}
+    score2={'B001':'17','B002':'19','B003':'18','B004':'14'}
+    score3 = {'G001': '17', 'G002': '15', 'G003': '16', 'G004': '16'}
+    red = tree.insert('',END, text='红队',open=True)
+    blue = tree.insert('', END, text='蓝队')
+    green = tree.insert('', END, text='绿队')
+    for index, item in score1.items():
+        tree.insert(red, END, text=index, values=(item))
+    for index, item in score2.items():
+        tree.insert(blue, END, text=index, values=(item))
+    for index, item in score3.items():
+        tree.insert(green, END, text=index, values=(item))
+    tree.pack()
+    win.mainloop()
+elif testcode == '10.9':
+    def setdat(a):
+        temp = monsel.get()
+        if temp ==2:
+            dat['value'] = tuple(range(1,29))
+        elif temp ==4 or temp ==6 or temp ==9 or temp ==11:
+            dat['value'] = tuple(range(1, 31))
+        else:
+            dat['value'] = tuple(range(1, 32))
+        pass
+    def get1():
+        if len(entry.get())== 0:
+            return False
+        else:
+            h = str(horsel.get()) if horsel.get() > 10 else '0'+str(horsel.get())
+            m = str(minsel.get()) if minsel.get() > 10 else '0' + str(minsel.get())
+            item1 = (str(mon.get()) + '月' + str(datsel.get()) + '日',h + ':' +m,entry.get())
+            if not tree.focus() == '':
+                tree.insert('', tree.index(tree.focus()),values=item1)
+                del1()
+            else:
+                tree.insert('',END,values=item1)
+            reset1()
+        pass
+    def del1():
+        if tree.focus() == '':
+            return False
+        else:
+            tree.delete(tree.focus())
+        pass
+    def edt(a):
+        temp =tree.set(tree.focus())
+        print(temp)
+        print(temp['date'])
+        d = temp['date'].split('月')
+        t = temp['time'].split(':')
+        monsel.set(int(d[0]))
+        datsel.set(int(d[1].split('日')[0]))
+        horsel.set(int(t[0]))
+        minsel.set(int(t[1]))
+        entry.delete(0, END)
+        entry.insert(INSERT, temp['depart'])
+        pass
+    def reset1():
+        monsel.set(1)
+        datsel.set(1)
+        horsel.set(0)
+        minsel.set(0)
+        entry.delete(0, END)
+    win = Tk()
+    frame = Frame()
+    frame.grid()
+    Label(frame, text='日期：').grid(row=0, column=0)
+    monsel = IntVar()
+    monsel.set(1)
+    mon = Combobox(frame, value=tuple(range(1,13)), textvariable=monsel, width=5)
+    mon.grid(row=0, column=1)
+    mon.bind('<<ComboboxSelected>>',setdat)
+    Label(frame, text='-').grid(row=0, column=2)
+    datsel= IntVar()
+    datsel.set(1)
+    dat = Combobox(frame, value=tuple(range(1,32)), textvariable=datsel, width=5)
+    dat.grid(row=0, column=3)
+    Label(frame, text='时间：').grid(row=0, column=4,columnspan=2,sticky=S+E)
+    horsel = IntVar()
+    horsel.set(0)
+    hor = Spinbox(frame, from_=0 ,to=24,width=5, textvariable=horsel)
+    hor.grid(row=0, column=6)
+    Label(frame, text=':').grid(row=0, column=7)
+    minsel = IntVar()
+    minsel.set(0)
+    min = Spinbox(frame, from_=0, to=59, width=5, textvariable=minsel)
+    min.grid(row=0 ,column=8)
+    Label(frame, text='出发地：').grid(row=0, column=9)
+    entry = Entry(frame)
+    entry.grid(row=0, column=10)
+    Button(frame, text='确定',command=get1).grid(row=0, column=11)
+    Button(frame, text='删除', command=del1).grid(row=0, column=12)
+
+    tree = Treeview(win, column=('date','time','depart'),show='headings')
+    tree.heading('date', text='日期')
+    tree.heading('time', text='时间')
+    tree.heading('depart', text='出发地')
+    tree.grid(row=1, column=0)
+    tree.bind('<<TreeviewSelect>>', edt)
+    win.mainloop()
+
+
 else:
     print('not testcode number define')
