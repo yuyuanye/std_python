@@ -4,7 +4,7 @@ from tkinter import *
 from random import *
 from tkinter.ttk import  *
 from tkinter.messagebox import *
-testcode = '10.9'
+testcode = '12.7'
 if testcode == '3.1':
     #set window title
     win = Tk()
@@ -1608,6 +1608,217 @@ elif testcode == '10.9':
     tree.heading('depart', text='出发地')
     tree.grid(row=1, column=0)
     tree.bind('<<TreeviewSelect>>', edt)
+    win.mainloop()
+elif testcode == '11.1':
+    subtest = 2
+    if subtest == 1:
+        win = Tk()
+        Progressbar(win, value=50).pack(pady=10)
+        win.mainloop()
+    else:
+        val = 0
+        def add1(c):
+            global  val
+            val += c
+            if val > pro['max']:
+                label.config(text='我吃饱了')
+            else:
+                vari.set(val)
+            pass
+        win = Tk()
+        win.geometry('220x190')
+        Label(win, text='投食：').grid(row=0, column=0, columnspan=1)
+        Button(win, text='大鱼', command=lambda : add1(2)).grid(row=0, column=1,pady=10)
+        Button(win, text='小鱼', command=lambda: add1(1)).grid(row=0, column=2, pady=10)
+        img = PhotoImage(file=r'.\pict\cat.png')
+        label=Label(win, imag=img, compound=TOP, foreground='red')
+        label.grid(row=1, column=0, columnspan=4)
+        vari = IntVar()
+        vari.set(0)
+        pro = Progressbar(win, mode='determinate', variable=vari, max=50, length=200)
+        pro.grid(row=2, column=0, columnspan=4, pady=5)
+        win.mainloop()
+        pass
+elif testcode == '11.2':
+    def rego():
+        pro.stop()
+        pro.step(5)
+        pro.start()
+        pass
+    win = Tk()
+    win.title('灵魂画师')
+    img = PhotoImage(file=r'.\pict\game.png')
+    label=Label(win, image=img, text='灵魂画师',foreground='red',font=('华文新魏', 18), compound=BOTTOM)
+    label.grid(row=1, column=0, columnspan=3)
+    pro = Progressbar(win, mode='determinate', value=0, max=100, length=100)
+    pro.grid(row=2, column=0 ,columnspan=3, pady=10)
+    Button(win, text='进入游戏',command=pro.start, width=7).grid(row=4, column=0,padx=5)
+    Button(win, text='游戏加速', command=rego, width=7).grid(row=4, column=1, padx=5)
+    Button(win, text='停止加载', command=pro.stop, width=7).grid(row=4, column=2, padx=5)
+    win.mainloop()
+elif testcode == '11.3':
+    win = Tk()
+    win.title('灵魂画师')
+    img = PhotoImage(file=r'.\pict\game.png')
+    label=Label(win, image=img, text='灵魂画师',foreground='red',font=('华文新魏', 18), compound=BOTTOM).pack(pady=5)
+
+    pro = Progressbar(win, mode='indeterminate', value=0, max=100, length=200)
+    pro.pack(pady=10)
+    Button(win, text='进入游戏',command=pro.start(40), width=7).pack()
+    win.mainloop()
+elif testcode == '12.1':
+    win = Tk()
+    win.title('创建canvas画布')
+    win.geometry('300x200')
+    canvas = Canvas(win, width=200, height=200, bg='#efefa3').pack()
+    win.mainloop()
+elif testcode == '12.2':
+    win = Tk()
+    win.title('创建canvas画布')
+    win.geometry('300x200')
+    canvas = Canvas(win, width=200, height=200)
+    line1 = (14,65,66,65,83,19,99,64,148,64,111,96,126,143,83,113,44,142,58,97,14,65)
+    line1 = canvas.create_line(*line1,fill='red')
+    canvas.pack()
+    win.mainloop()
+elif testcode == '12.3':
+    '''
+    def up1(event):
+
+        canvas.move(rect, 0 ,-2)
+        pass
+    def down1(event):
+
+        canvas.move(rect,0,2)
+        pass
+    def left1(event):
+
+        canvas.move(rect, -2,0)
+        pass
+    def right1(event):
+
+        canvas.move(rect,2,0)
+        pass       
+    win = Tk()
+    win.title('键盘控制矩阵移动')
+    win.geometry('300x200')
+    canvas = Canvas(win, width=200, height=200, relief='solid')
+    rect = canvas.create_rectangle(10,10, 50,50,fill = '#c8f7f2')
+    canvas.pack()
+    win.bind('<Up>', up1)
+    win.bind('<Down>',down1)
+    win.bind('<Left>', left1)
+    win.bind('<Right>', right1)
+    win.mainloop()
+    '''
+#  _*_ coding:utf-8 _*_
+# 开发团队：明日科技
+# 开发人员：Administrator
+# 文件名称：demo1.py
+# 开发工具：PyCharm
+# canvas绘制矩形
+
+
+    def up1(event):
+        # move方法实现rect向上移动两个单位
+        canvas.move(rect, 0, -2)
+
+
+    def down1(event):
+        # move方法实现rect向下移动两个单位
+        canvas.move(rect, 0, 2)
+
+
+    def left1(event):
+        # move方法实现rect向左移动两个单位
+        canvas.move(rect, -2,0 )
+
+
+    def right1(event):
+        # move方法实现rect向右移动两个单位
+        canvas.move(rect, 2,0 )
+
+
+    from tkinter import *
+
+    win = Tk()
+    win.title("键盘控制矩形移动")
+    win.geometry("300x200")
+    canvas = Canvas(win, width=200, height=200, relief="solid")  # 创建画布
+    rect = canvas.create_rectangle(10, 10, 50, 50, fill="#C8F7F2") # 绘制矩形
+    canvas.pack()
+
+    win.bind("<Up>", up1)      # 绑定键盘事件
+    win.bind("<Down>", down1)
+    win.bind("<Left>", left1)
+    win.bind("<Right>", right1)
+    win.mainloop()
+elif testcode == '12.4':
+    subtest = 2
+    if subtest == 1:
+        win = Tk()
+        win.title('绘制人脸')
+        win.geometry('300x200')
+        canvas = Canvas(win, width=200, height=200, relief='solid')
+        cir1 = canvas.create_oval(34, 68, 143, 127, fill='#c8f7f2')
+        cir2 = canvas.create_oval(59, 83, 71, 99, fill='#e6f1b7')
+        cir2_1 = canvas.create_oval(61, 86, 71, 94, fill='#000000')
+        cir3 = canvas.create_oval(101, 83, 113, 99, fill='#e6f1b7')
+        cir3_1 = canvas.create_oval(100, 86, 109, 94, fill='#000000')
+        canvas.pack()
+        win.mainloop()
+    else:
+        win = Tk()
+        win.title('绘制圆弧')
+        win.geometry('300x200')
+        canvas = Canvas(win, width=500, height=400, relief='solid')
+        canvas.create_arc(20, 40, 150, 150, extent=120, outline='#EBD17a',start=30,width=2,style=ARC)
+        canvas.create_arc(170, 40, 300,150, extent=120, outline='#edb17a',start=30,width=2,style=CHORD)
+        canvas.create_arc(320, 40,450,150,extent=120,outline='#edb17a',start=30, width=2,style=PIESLICE)
+        canvas.pack()
+        win.mainloop()
+        pass
+elif testcode == '12.5':
+    win = Tk()
+    win.title('绘制西瓜')
+    win.geometry('300x200')
+    canvas = Canvas(win,width=200,height=200, relief='solid')
+    arc1 = canvas.create_arc(40,40,150,150,extent=-180,fill='#e95121',outline='#73f18b',width=5)
+    line = canvas.create_line(42,94,148,94,width=7, fill='#e95121')
+    cir1 = canvas.create_oval(95,95,100,100, fill='#000000')
+    cir2 = canvas.create_oval(70, 97, 75, 102, fill='#000000')
+    cir3 = canvas.create_oval(95, 125, 100, 130, fill='#000000')
+    cir4 = canvas.create_oval(65, 125, 70, 130, fill='#000000')
+    cir5 = canvas.create_oval(125, 110, 130, 115, fill='#000000')
+    canvas.pack()
+    win.mainloop()
+elif testcode == '12.6':
+    win = Tk()
+    win.title('绘制西瓜形状的雪糕')
+    win.geometry('300x200')
+    canvas = Canvas(win, width=500, height=400, relief='solid')
+    canvas.create_line(95, 124, 95, 194,fill='#e9d39d', capstyle=ROUND, width=12)
+    canvas.create_arc(5, -70, 185,162,extent=-40, outline='#32e143',fill='#32e143',start=-70,width=2,style=PIESLICE)
+    canvas.create_arc(8,-67, 181,155,extent=-40, outline='#e29724',fill='#e29724',start=-70, width=2,style=PIESLICE)
+    canvas.create_arc(92,74,97,79,extent=159, fill='#000',width=2,style=ARC)
+    canvas.create_arc(97, 94, 102, 99, extent=180,start=90, fill='#000', width=2, style=ARC)
+    canvas.create_arc(110, 124, 113, 127, extent=359, fill='#000', width=2, style=ARC)
+    canvas.create_arc(90, 134, 93, 137, extent=359, fill='#000', width=2, style=ARC)
+    canvas.pack()
+    win.mainloop()
+elif testcode == '12.7':
+    win = Tk()
+    win.title('绘制松鼠')
+    win.geometry('240x260')
+    canvas = Canvas(win, width=250, height=250, relief='solid')
+    poly1  = canvas.create_polygon(27,8,27,62,54,34,fill='#fbfe0d')
+    poly2 = canvas.create_polygon(54, 34, 81, 8, 81, 63, fill='red')
+    poly3 = canvas.create_polygon(81,63,54, 35, 25, 61, 53, 90, fill='#0001fc')
+    poly4 = canvas.create_polygon(81, 63, 81, 176, 138, 121, fill='#32ccfe')
+    poly5 = canvas.create_polygon(81, 97, 43, 135, 81, 174, fill='#fdcbfe')
+    poly6 = canvas.create_polygon(139, 119, 60, 198, 140, 198, fill='#02cd02')
+    poly7 = canvas.create_polygon(140,198,167, 170, 233, 170, 196, 198, fill='#9b01ff')
+    canvas.pack()
     win.mainloop()
 
 
