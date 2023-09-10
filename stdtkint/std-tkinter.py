@@ -6,7 +6,7 @@ from tkinter import *
 from random import *
 #from tkinter.ttk import  *
 from tkinter.messagebox import *
-testcode = '13.3'
+testcode = '15.7'
 if testcode == '3.1':
     #set window title
     win = Tk()
@@ -2086,7 +2086,7 @@ elif testcode == '13.2':
         print(snake[0].winfo_geometry())
         win.mainloop()
 elif testcode == '13.3':
-    subtest = 1
+    subtest = 2
     if subtest == 1:
         def fg1():
             button.config(fg='red')
@@ -2102,6 +2102,249 @@ elif testcode == '13.3':
         win.mainloop()
         pass
     else:
+        import random
+        def col():
+            arr=['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
+            color1='#'
+            for i in range(6):
+                color1 += arr[random.randint(0,15)]
+            return color1
+        def go1():
+            a = col()
+            for i in box1:
+                i.config(bg=a)
+        def go2(event):
+            a = col()
+            for i in box2:
+                i.config(bg=a)
+
+        win = Tk()
+        win.geometry('330x200')
+        box1=[]
+        box2=[]
+        for i in range(8):
+            for j in range(2):
+                label = Label(win, width=5, height=1, relief='groove')
+                label.grid(row=j,column=i)
+                if (i+j)%2 == 0:
+                    box1.append(label)
+                else:
+                    box2.append(label)
+        btn = Button(win, text='一键着色', command=go1)
+        btn.grid(row=9, column=0 ,columnspan=8)
+        btn.bind('<Button-1>', go2, add='+')
+        win.mainloop()
         pass
+elif testcode == '13.4':
+    step = 5
+    def up1(event):
+        print(xx(frame), yy(frame))
+        if (yy(frame) <= 0):
+            #win.unbind('<Up>')
+            print('unbind up')
+        else:
+            frame.place(x=xx(frame), y=yy(frame) - step)
+
+    def down1(event):
+        print(xx(frame), yy(frame))
+        if (yy(frame) >=160):
+            #win.unbind('<Down>')
+            print('unbind down')
+        else:
+            frame.place(x=xx(frame), y=yy(frame)+step)
+    def left1(event):
+        print(xx(frame), yy(frame))
+        if xx(frame) <= 0:
+            #win.unbind('<Left>')
+            print('unbind left')
+        else:
+            frame.place(x=xx(frame) - step, y=yy(frame))
+    def right1(event):
+        print(xx(frame), yy(frame))
+        if xx(frame) >=260:
+            #win.unbind('<Right>')
+            print('unbind right')
+        else:
+            frame.place(x=xx(frame) + step, y=yy(frame))
+            #win.bind('<Right>', right1)
+    def xx(module):
+        return int(module.winfo_geometry().split('+')[1])
+    def yy(module):
+        return int(module.winfo_geometry().split('+')[2])
+    #-----------------------------------------------
+    win = Tk()
+    win.geometry('300x200')
+    win.resizable(0,0)
+    frame = Frame(width=40, height=40, bg='#e2abe5')
+    frame.place(x=0,y=0)
+    win.bind('<Up>', up1)
+    win.bind('<Down>', down1)
+    win.bind('<Left>', left1)
+    win.bind('<Right>', right1)
+    win.mainloop()
+elif testcode == '15.1':
+    import shutil
+    import os
+    subtest = 5
+    if subtest == 1:
+        file = open('test.txt', 'w', encoding='utf-8')
+        print('文本已经创建完成，请添加内容：\n')
+        a = input()
+        file.write(a)
+        file.close()
+        print('\n添加文本内容成功，请手动查看')
+        with open('test.txt', 'r') as file:
+            print(file.readlines())
+    elif subtest == 2:
+        shutil.copyfile(r'.\test.txt', r'.\dst.txt')
+    elif subtest == 3:
+        print('test file move')
+        shutil.move(r'.\test.txt', r'..\mov.txt')
+    elif subtest == 4:
+        os.rename(r'./test.txt', r'./rename.txt')
+    elif subtest == 5:
+        str = './/test.txt'
+        if os.path.exists(r'./test.txt'):
+            print('file exist')
+            os.remove(str)
+        else:
+            print('not exist')
+    else:
+        pass
+elif testcode == '15.3':
+    from tkinter import *
+    import os, time
+    def show1():
+        a = os.stat(r'.\rename.txt')
+        text.insert(INSERT,'文件大小'+str(a.st_size)+'字节')
+        text.insert(INSERT, '\n\n文件路径：' + os.path.abspath('.\\rename.txt'))
+        text.insert(INSERT,'\n\n最后访问时间：'+ time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(a.st_atime)))
+        pass
+    win = Tk()
+    Button(win,text='显示信息', command=show1).pack(pady=10)
+    text = Text(win, font=14, width=60, height=10)
+    text.pack()
+    win.mainloop()
+elif testcode == '15.4':
+    from tkinter import *
+    from tkinter.ttk import *
+    import os
+    class tree(object):
+        def __init__(self,path):
+            self.win = Tk()
+            self.win.title('显示树形目录')
+            self.tree = Treeview()
+            self.tree.heading('#0', text='file')
+            self.tree.pack()
+            temppath = os.path.basename(path)
+            print(temppath +'='*10)
+            treeF = self.tree.insert('', 0, text=temppath)
+            self.showtree(path, treeF)
+            self.win.mainloop()
+        def showtree(self,path, root):
+            filelist = os.listdir(path)
+            for filename in filelist:
+                abspath = os.path.join(path, filename)
+                print('path is ' + path)
+                print('filename is ' + filename)
+                print('abspath is ' + abspath)
+                treeFinside = self.tree.insert(root, 0, text=filename, values=(abspath))
+                #treeFinside = self.tree.insert(root, 0, text=filename, values='')
+                if os.path.isdir(abspath):
+                    self.showtree(abspath, treeFinside)
+    a = tree(r'D:\checkpull\std_python\stdtkint')
+elif testcode == '15.5':
+    subtest = 2
+    if subtest == 1:
+        from tkinter import *
+        from tkinter.filedialog import  *
+        def a():
+            bb = askopenfilename(title='选择文件', filetypes=[('png格式的文件图片', '*.png')])
+        win = Tk()
+        Button(win, text='选择', command=a).pack()
+        win.mainloop()
+    else:
+        from tkinter import *
+        from tkinter.filedialog import *
+        from tkinter.ttk import *
+        def a():
+            file = askopenfilenames(title='选择文件',filetype=[('png图片','*.png')])
+            for i,ch in enumerate(file):
+                tree.insert('', index=END, text=i,values=(ch))
+                print('='*10 + str(i))
+                print(ch)
+                print('='*10)
+            pass
+        win = Tk()
+        win.title('显示所选文件的信息')
+        Button(win, text='选择', command=a).pack(pady=5)
+        tree = Treeview(win, columns=('path'))
+        tree.heading('#0', text='序号')
+        tree.heading('path',text='路径')
+        tree.pack()
+        win.mainloop()
+        pass
+elif testcode == '15.6':
+    from tkinter import *
+    from tkinter.filedialog import *
+    subtest = 2
+    if subtest == 1:
+        def sav():
+            filetype=[('Python Files','*.py *.pyw'),('Text Files','*.txt'),('All Files','*.*')]
+            b=asksaveasfilename(defaultextension='.py', filetypes= filetype, initialdir='D:\\code', initialfile='savexamp',title='另存为')
+            print(b)
+        win = Tk()
+        Button(win, text='保存', command=sav).pack(pady=10)
+        win.mainloop()
+    else:
+        from tkinter import *
+        from tkinter.filedialog import *
+        from tkinter.messagebox import  *
+        b=''
+        def sav():
+            global b
+            filetype= [('Python Files','*.py *.pyw'),('Text Files','*.txt'),('All Files','*.*')]
+            b = asksaveasfile(defaultextension='.py', filetypes=filetype, initialdir='D:\\checkpull\\std_python\\stdtkint',
+                                  initialfile='savexamp', title='另存为')
+            pass
+        def edit1():
+            global b
+            if b == '':
+                showerror('错误','文件不存在，请先创建文件')
+            else:
+                text.grid(row=2, column=0,columnspan=3)
+            pass
+        def ok():
+            global  text
+            a = text.get(0.0, END)
+            print(len(a))
+            if len(a) <=1:
+                showerror('错误','内容不能为空')
+            else:
+                file = open(b.name, 'w', encoding='utf-8')
+                file.write(a)
+                file.close()
+                win.quit()
+            pass
+        win = Tk()
+        Button(win, text='创建文件', command=sav).grid(row=0, column=0,padx=10)
+        Button(win, text='编辑内容', command=edit1).grid(row=0, column=1,padx=20,pady=10)
+        Button(win, text='提交',command=ok).grid(row=0, column=2, padx=10)
+        text = Text(win, width=50, height=5)
+        win.mainloop()
+        pass
+elif testcode == '15.7':
+    def sav():
+        b= askopenfile(title='打开文件',filetypes=[('text文本文件','*.txt')])
+        file = open(b.name, 'r')
+        text.insert(0.0, file.readlines())
+        pass
+    from tkinter import *
+    from tkinter.filedialog import *
+    win = Tk()
+    Button(win, text='打开文件', command=sav).pack(pady=10)
+    text= Text(win, width=50, height=5)
+    text.pack()
+    win.mainloop()
 else:
     print('not testcode number define')
