@@ -1,10 +1,12 @@
 
 #==========================  2023-09-02    ===================================================
+import random
+import time
 from tkinter import *
 from random import *
-from tkinter.ttk import  *
+#from tkinter.ttk import  *
 from tkinter.messagebox import *
-testcode = '12.7'
+testcode = '13.3'
 if testcode == '3.1':
     #set window title
     win = Tk()
@@ -1820,7 +1822,286 @@ elif testcode == '12.7':
     poly7 = canvas.create_polygon(140,198,167, 170, 233, 170, 196, 198, fill='#9b01ff')
     canvas.pack()
     win.mainloop()
+elif testcode == '12.8':
+    import random
+    fill_color = ['#b0e3dd','#e19644','#6689e1','#e16678','#66e1ca']
+    font_family = ['方正舒体','方正姚体','华文琥珀','宋体','华文行楷','楷体']
+    def draw():
+        canvas.delete('all')
+        color = fill_color[random.randint(0,4)]
+        family = font_family[random.randint(0,6)]
+        text = canvas.create_text(160, 60, text=str, font=(family, 20), fill=color)
+        pass
+    win = Tk()
+    a = random.randint(1,10)
+    print(a)
+    win.title('绘制文字')
+    win.geometry('330x200')
+    canvas = Canvas(win, width=300, height=160, relief='solid')
+    str='人因梦想伟大'
+    canvas.pack()
+    Button(win, text='绘制', command=draw).pack()
+    win.mainloop()
+elif testcode == '12.9':
+    def draw(event):
+        canvas.coords(bird, event.x, event.y)
+        pass
+    def panduan(event):
+        canvas.coords(bird, event.x, event.y)
+        x1 = abs(event.x-340)
+        y1 = abs(event.y - 70)
+        if x1 < 70 and y1 < 75:
+            showinfo('小鸟回家', '谢谢你成功帮助小鸟回家')
+        pass
+    win = Tk()
+    win.title('帮助小鸟回家')
+    win.geometry('400x320')
+    canvas = Canvas(win, width=400, height=320, relief='solid',bg='#e7d2bb')
+    bird1 = PhotoImage(file=r'.\pict\bird.png')
+    house1 = PhotoImage(file = r'.\pict\house.png')
+    house = canvas.create_image(340,70, image=house1)
+    bird = canvas.create_image(150,250, image=bird1)
+    canvas.grid(row=0, column=0, columnspan=2)
+    canvas.bind('<B1-Motion>',draw)
+    canvas.bind('<ButtonRelease-1>', panduan)
+    win.mainloop()
+elif testcode == '12.10':
+    def draw(event):
+        global  text1
+        text1 = canvas.create_oval(event.x, event.y,event.x+10, event.y+10, fill='green', outline='')
+        pass
+    def delete1():
+        canvas.delete('all')
+        can()
+        pass
+    def can():
+        rect = canvas.create_rectangle(4, 4, 400, 385, outline='red', width=2)
+        line1 = canvas.create_line(2, 198, 400, 198, dash=(2, 2), fill='red')
+        line2 = canvas.create_line(198, 2, 198, 400, dash=(2, 2), fill='red')
+        line3 = canvas.create_line(0, 0, 400, 400, dash=(2, 2), fill='red')
+        line4 = canvas.create_line(0, 400, 400, 0, dash=(2, 2), fill='red')
+        canvas.pack(side='bottom')
+        canvas.bind('<B1-Motion>', draw)
+    win = Tk()
+    win.title('书法秀')
+    win.geometry('420x420')
+    canvas = Canvas(win, width=400, height=400, bg='#f1e9d0',relief='solid')
 
+    Button(win ,text='清屏', command=delete1).pack(side='bottom')
+    can()
+    win.mainloop()
+elif testcode == '12.11':
+    x1 = 350
+    step =2
+    op=1
+    bar=1
+    def move1():
+        global bar
+        bar = 1
+        global  x1
+        global fish
+        global op
+        if (x1 > 350):
+            op = -1
+            canvas.delete(fish)
+            fish = canvas.create_image(x1, 50, image=fish1)
+        if (x1 <=0):
+            op =1
+            canvas.delete(fish)
+            fish = canvas.create_image(x1, 50, image=fish2)
+        x1=x1+op*step
+        canvas.coords(fish, (x1,50))
+    def move_fish():
+        while bar:
+            move1()
+            time.sleep(0.1)
+            win.update()
+    def catch_fish():
+        canvas.coords(cat, (150,50))
+        global  bar
+        bar =0
+        if abs(x1-50)<=160 and abs(x1-50)>=40:
+            showinfo('成功钓鱼','恭喜钓到一条鱼')
+        else:
+            showinfo('钓鱼失败','喔喔，钓鱼失败喔')
+    def restart():
+        global bar
+        #canvas.delete(cat)
+        canvas.coords(cat, (150,250))
+        #cat = canvas.create_image(150, 250, image=cat1)
+        bar = 1
+        move_fish()
+    #-------------------------------------------
+    win = Tk()
+    win.title('小猫钓鱼')
+    win.geometry('400x400')
+    canvas = Canvas(win, width=400, height=320, relief='solid',bg = '#e7d2bb')
+    cat1 = PhotoImage(file=r'.\pict\cat.png')
+    fish1 = PhotoImage(file = r'.\pict\fish.png')
+    fish2 = PhotoImage(file = r'.\pict\fish1.png')
+    fish = canvas.create_image(350, 50, image=fish1)
+    cat = canvas.create_image(150,250, image=cat1)
+    canvas.grid(row=0, column=0, columnspan=2)
+    btn = Button(win, text='开始', command=move_fish).grid(row=1, column=0)
+    btn = Button(win, text='钓鱼', command=catch_fish).grid(row=1, column=1)
+    btn = Button(win, text='重新开始', command=restart).grid(row=1, column=2)
+    win.mainloop()
+elif testcode == '13.1':
+    from tkinter import *
+    subtest = 2
+    if subtest == 1:
+        def show1(event):
+            label.config(text = '我是label组件')
+            pass
+        def hidden1(event):
+            label.config(text='')
+            pass
+        win = Tk()
+        label = Label(win, bg='#c5e1ef', width=20,height=3,)
+        label.pack(pady=20, padx=20)
+        label.bind('<Enter>', show1)
+        label.bind('<Leave>', hidden1)
+        win.mainloop()
+    else:
+        from tkinter import *
+        import random
+        # -----------------------------------------------
+        num = 1
+        inde = random.randint(0,99)
+        def col():
+            arr=['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
+            color1=''
+            color2=''
+            color3=''
+            for i in range(4):
+                color1 += arr[random.randint(0, 15)]
+            for i in range(2):
+                color2 += arr[random.randint(0, 15)]
+            for i in range(2):
+                color3 += arr[random.randint(0, 15)]
+            colorArr = []
+            colorArr.append('#'+ color1+color2)
+            colorArr.append('#' + color1 + color3)
+            return colorArr
+        def panduan(event):
+            global num
+            num +=1
+            level.config(text ='第' +str(num)+ '关')
+            inde = random.randint(1,100)
+            colorBox = col()
+            for i in sqareBox:
+                i.config(bg=colorBox[0])
+            sqareBox[inde].config(bg=colorBox[1])
+            sqareBox[inde].bind('<Button-1>', panduan)
 
+        #-----------------------------------------------
+        win = Tk()
+        win.geometry('270x270')
+        win.resizable(0,0)
+        sqareBox=[]
+        colorBox=col()
+        for i in range(10):
+            for j in range(10):
+                label=Label(win, width=3, height=1, bg=colorBox[0], relief='groove')
+                sqareBox.append(label)
+                label.grid(row=i, column=j)
+        sqareBox[inde].config(bg=colorBox[1])
+        sqareBox[inde].bind('<Button-1>', panduan)
+        level = Label(win, text='第一关',font=14)
+        level.grid(row=11, column=0, columnspan=10,pady=10)
+        win.mainloop()
+        pass
+elif testcode == '13.2':
+    from tkinter import *
+    subtest = 2
+    if subtest == 1:
+        def prt(event):
+            le = len(text.get('0.0', END))
+            label.config(text=str(le))
+        win = Tk()
+        text = Text(win, width=20, height=5)
+        text.pack()
+        label = Label(win)
+        label.pack()
+        text.bind('<Key>', prt)
+        win.mainloop()
+    else:
+        w =10
+        x1=0
+        y1=10
+        num=5
+        step=10
+        #------------------------------------
+        def up1(event):
+            for index, ch in enumerate(snake):
+                ind = len(snake) - index -1
+                if ind ==0:
+                    snake[ind].place(x=xx(snake[ind]), y=yy(snake[ind])- step)
+                else:
+                    snake[ind].place(x=xx(snake[ind -1]), y=yy(snake[ind - 1]))
+            pass
+        def down1(event):
+            for index,ch in enumerate(snake):
+                ind = len(snake) - index -1
+                if ind ==0:
+                    snake[ind].place(x=xx(snake[ind]), y=yy(snake[ind])+step)
+                else:
+                    snake[ind].place(x=xx(snake[ind - 1]), y=yy(snake[ind -1]))
+            pass
+        def left1(event):
+            for index, ch in enumerate(snake):
+                ind = len(snake)-index -1
+                if ind ==0:
+                    snake[ind].place(x=xx(snake[ind])-step,y=yy(snake[ind]))
+                else:
+                    snake[ind].place(x = xx(snake[ind -1]), y =yy(snake[ind - 1]))
+            pass
+        def right1(event):
+            for index,ch in enumerate(snake):
+                ind = len(snake)- index -1
+                if ind == 0:
+                    snake[ind].place(x=xx(snake[ind])+step, y=yy(snake[ind]))
+                else:
+                    snake[ind].place(x=xx(snake[ind -1]), y=yy(snake[ind - 1]))
+            pass
+        def xx(module):
+            return int(module.winfo_geometry().split('+')[1])
+            pass
+        def yy(module):
+            return int(module.winfo_geometry().split("+")[2])
+            pass
+        #------------------------------------
+        win = Tk()
+        snake=[]
+        for i in range(num):
+            item1 = Frame(width= 10 ,height=10, bg='#86e7dd')
+            snake.append(item1)
+            item1.place(x=x1, y=y1+i*w)
+        snake[0].config(bg='#E7869d')
+        win.bind('<Up>',up1)
+        win.bind('<Down>', down1)
+        win.bind('<Left>', left1)
+        win.bind('<Right>', right1)
+        print(snake)
+        print(snake[0].winfo_geometry())
+        win.mainloop()
+elif testcode == '13.3':
+    subtest = 1
+    if subtest == 1:
+        def fg1():
+            button.config(fg='red')
+        def bg(event):
+            button.config(bg='#abe1db')
+        def font(event):
+            button.config(font=14)
+        win = Tk()
+        button = Button(win, text='按钮',command=fg1)
+        button.bind('<Button-1>',bg,add="+")
+        button.bind('<Button-1>', font, add="+")
+        button.pack(pady=10)
+        win.mainloop()
+        pass
+    else:
+        pass
 else:
     print('not testcode number define')
