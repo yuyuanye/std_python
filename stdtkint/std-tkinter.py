@@ -2334,17 +2334,32 @@ elif testcode == '15.6':
         win.mainloop()
         pass
 elif testcode == '15.7':
-    def sav():
-        b= askopenfile(title='打开文件',filetypes=[('text文本文件','*.txt')])
-        file = open(b.name, 'r')
-        text.insert(0.0, file.readlines())
-        pass
-    from tkinter import *
-    from tkinter.filedialog import *
-    win = Tk()
-    Button(win, text='打开文件', command=sav).pack(pady=10)
-    text= Text(win, width=50, height=5)
-    text.pack()
-    win.mainloop()
+    subtest = 2
+    if subtest == 1:
+        def sav():
+            b= askopenfile(title='打开文件',filetypes=[('text文本文件','*.txt')])
+            file = open(b.name, 'r',encoding='utf-8')
+            text.insert(0.0, file.readlines())
+            pass
+        from tkinter import *
+        from tkinter.filedialog import *
+        win = Tk()
+        Button(win, text='打开文件', command=sav).pack(pady=10)
+        text= Text(win, width=50, height=5)
+        text.pack()
+        win.mainloop()
+    else:
+        from tkinter import *
+        from tkinter.filedialog import *
+        from tkinter.messagebox import *
+        def sav():
+            b = askdirectory(title="选择或者重新创建一个文件夹")
+            print(b)
+            pass
+        win = Tk()
+        Button(win, text='选择文件夹',command=sav).grid(row=0,column=0,padx=10)
+        win.mainloop()
+
+
 else:
     print('not testcode number define')
