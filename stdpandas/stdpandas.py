@@ -5,7 +5,7 @@
 import pandas
 import pandas as pd
 
-testcode = '35'
+testcode = '38'
 
 # Press the green button in the gutter to run the script.
 #if __name__ == '__main__':
@@ -306,10 +306,35 @@ elif testcode == '35':
     df = pd.DataFrame(data=data, index=name, columns=columns)
     print(df)
     print('='*30)
-    df.drop(['数学'],axis=1,inplace=True)
+    #df.drop(['数学'],axis=1,inplace=True)
+    #df.drop(columns='数学', inplace=True)
+    #df.drop(labels='数学', axis=1, inplace=True)
+    #df.drop(['明日','二月二'], inplace=True)
+    #df.drop(index='明日', inplace=True)
+    df.drop(labels='明日',axis=0, inplace=True)
     #msg = help(DataFrame.drop)
     #print(msg)
     print(df)
+elif testcode == '36':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print('='*30)
+    #df.drop(df[df['数学'].isin([88])].index, inplace=True)
+    df.drop(df[df['语文']<110].index, inplace=True)
+    print(df)
+elif testcode == '37':
+    df = pd.read_excel(r'.\resource\TB2018.xls')
+    print(df)
+    print(df.info())
+elif testcode == '38':
+    df = pd.read_excel(r'.\resource\TB2018.xls')
+    #print(df)
+    #print(df.isnull())
+    print(df.notnull())
 else:
     pass
 
