@@ -5,7 +5,7 @@
 import pandas
 import pandas as pd
 
-testcode = '18'
+testcode = '35'
 
 # Press the green button in the gutter to run the script.
 #if __name__ == '__main__':
@@ -122,6 +122,194 @@ elif testcode == '18':
     df = df[[x.startswith('$') for x in df[3]]]
     #print(df)
     df.to_csv(r'.\resource\nba.csv', header=['RK','NAME','TEAM','SALARY'],index=False)
+elif testcode == '19':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130],[112,115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火','二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print('='*30)
+    print(df.loc['明日'])
+elif testcode == '20':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df.loc[['明日','高同学']])
+    print('=' * 30)
+    print(df.iloc[[0,1]])
+elif testcode == '21':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df.loc['明日':'二月二'])
+    print('=' * 30)
+    print(df.loc[:'七月流火':])
+    print('=' * 30)
+    print(df.iloc[0:4])
+    print('=' * 30)
+    print(df.iloc[1::])
+elif testcode == '22':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df[['语文', '数学']])
+elif testcode == '23':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df.loc[:,['语文', '数学']])
+    print('=' * 30)
+    print(df.iloc[:,[0,1]])
+    print('=' * 30)
+    print(df.loc[:, '语文':])
+    print('=' * 30)
+    print(df.iloc[:,:2])
+elif testcode == '24':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    '''
+    print(df.loc['七月流火','英语'])
+    print('=' * 30)
+    print(df.loc[['七月流火'], ['英语']])
+    print('=' * 30)
+    print(df.loc[['七月流火'], ['英语','数学']])
+    print('=' * 30)
+    '''
+    print(df.iloc[[1],[2]])
+    print('=' * 30)
+    print(df.iloc[1:, [2]])
+    print('=' * 30)
+    print(df.iloc[1:, [0,2]])
+    print('=' * 30)
+    print(df.iloc[:, 2])
+    print('=' * 30)
+elif testcode == '25':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print(df.loc[(df['语文'] > 105) & (df['数学'] > 88)])
+elif testcode == '26':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    df['物理'] = [88,99,79,60]
+    print(df)
+elif testcode == '27':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    df.loc[:,'物理'] = [88,99,79,60]
+    print(df)
+elif testcode == '28':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    wl = [88, 99, 79, 60]
+    df.insert(1,'物理',wl)
+    print(df)
+elif testcode == '29':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    df.loc['钱多多'] = [110,98,79]
+    print(df)
+elif testcode == '30':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    df_insert = pd.DataFrame({'语文':[100,123,138],'数学':[99,142,60],'英语':[98,139,99]},index=['钱多多','童年','无名'])
+    print(df_insert)
+    df1 = df._append(df_insert)
+    print(df1)
+elif testcode == '31':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print('='*30)
+    df.columns = ['语文', '数学（上）', '英语']
+    print(df)
+elif testcode == '32':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print('='*30)
+    #df.columns = ['语文(上)', '数学（上）', '英语（上）']
+    df.rename(columns = {'语文':'语文(上)', '数学':'数学（上）', '英语':'英语（上）'},inplace=True)
+    print(df)
+elif testcode == '33':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    #print(list('1234'))
+    print('='*30)
+    #df.index = list('1234')
+    df.rename({'明日':2, '高同学':2, '七月流火':3, '二月二':4}, inplace=True)
+    print(df)
+elif testcode == '34':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print('='*30)
+    #df.loc['明日'] =[120,115,109]
+    #df.loc['明日'] = df.loc['明日'] + 20
+    #df.loc[:,'语文'] = [120, 115, 109,89]
+    #df.loc['明日', '语文'] = 127
+    #df.iloc[0, 0] = 124
+    #df.iloc[:, 0] = [120, 115, 109, 89]
+    df.iloc[0,:] = [120, 115, 109]
+    print(df)
+elif testcode == '35':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110, 105, 99], [105, 88, 115], [109, 120, 130], [112, 115]]
+    columns = ['语文', '数学', '英语']
+    name = ['明日', '高同学', '七月流火', '二月二']
+    df = pd.DataFrame(data=data, index=name, columns=columns)
+    print(df)
+    print('='*30)
+    df.drop(['数学'],axis=1,inplace=True)
+    #msg = help(DataFrame.drop)
+    #print(msg)
+    print(df)
 else:
     pass
 
