@@ -1,0 +1,11 @@
+type=usb
+bootloader=NL6683_bootloader_v1.03.bin
+
+
+calibware=NPES13R-01-V01-crc.bin
+calibdata1=6683_40m_crc.bin
+calibdata2=6683_20m_crc.bin
+prj=obu
+rf=5p8
+firm_version=v5.4.83
+firmware=nft_obu_5p8_20221102_110617.bin

@@ -45,22 +45,7 @@ if __name__ == '__main__':
     addr_calil_code = 0x00066000
     addr_cali_data1 = 0x000F0000
     addr_cali_data2 = 0x000DB000
-    p_file_size = 0x0036000
-    #----------------
-    product_file = open('firm210k.bin', 'wb')
-    firmware = open('euht_sta.bin','rb')
-    byte_val = b'\xff'
-    i = 0
-    while i < p_file_size:
-        product_file.write(byte_val)
-        i = i + 1
-    product_file.seek(0, 0)
-    for bt in firmware:
-        product_file.write(bt)
-    firmware.close()
-    product_file.close()
-    #------------------
-
+    p_file_size = 0x0100000
     #p_file_size = 0x0100
     f_rd_note = 'product_note_sta.txt'
     note_r = open(f_rd_note, 'r')
@@ -209,7 +194,7 @@ if __name__ == '__main__':
 
     product_file.close()
 
-    #fromfile = input('File to be split?')
+    fromfile = input('File to be split?')
 
 
 
