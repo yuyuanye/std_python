@@ -5,7 +5,7 @@
 import pandas
 import pandas as pd
 
-testcode = '38'
+testcode = '4_01'
 
 # Press the green button in the gutter to run the script.
 #if __name__ == '__main__':
@@ -334,7 +334,144 @@ elif testcode == '38':
     df = pd.read_excel(r'.\resource\TB2018.xls')
     #print(df)
     #print(df.isnull())
-    print(df.notnull())
+    #print(df.notnull())
+    #df.dropna(inplace=True)
+    df1 = df[df['宝贝总数量'].notnull()]
+    print(df1)
+elif testcode == '39':
+    df = pd.read_excel(r'.\resource\TB2018.xls')
+    df['宝贝总数量'] = df['宝贝总数量'].fillna(0)
+    print(df)
+elif testcode == '40':
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = pd.read_excel(r'.\resource\1月.xlsx')
+    #print(df.duplicated(['收货人姓名']))
+    #df1 = df.drop_duplicates(['收货人姓名'])
+    df1 = df.drop_duplicates(['收货人姓名'],keep='last')
+    print(df1)
+elif testcode == '41':
+    subtest = 2
+    if subtest == 1:
+        s1 = pd.Series([10,20,30],index=list('abc'))
+        s2 = pd.Series([2, 3, 4], index=list('bcd'))
+        print(s1)
+        print('='*30)
+        print(s2)
+        print('=' * 30)
+        print(s1+s2)
+    elif subtest == 2:
+        s1 = pd.Series([88,60,75], index=[1,2,3])
+        print(s1)
+        print('=' * 30)
+        #print(s1.reindex([1,2,3,4,5]))
+        print(s1.reindex([1, 2, 3, 4, 5], fill_value=0))
+    else:
+        pass
+elif testcode == '3_42':
+    '''
+    s1 = pd.Series([88,60,75], index=[1,2,3])
+    print(s1)
+    print('=' * 30)
+    print(s1.reindex([1,2,3,4,5],method='ffill'))
+    '''
+    s1 = pd.Series([88, 60, 75], index=[3, 4, 5])
+    print(s1)
+    print('=' * 30)
+    print(s1.reindex([1, 2, 3, 4, 5], method='bfill'))
+elif testcode == '3_43':
+    pd.set_option('display.unicode.east_asian_width', True)
+    data = [[110,105,99],[105,88,115],[109,120,130]]
+    index = ['mr001','mr003','mr005']
+    columns = ['语文', '数学', '英语']
+    df = pd.DataFrame(data=data, index=index,columns=columns)
+    print(df)
+    print('='*30)
+    #print(df.reindex(['mr001','mr002','mr003','mr004','mr005']))
+    #print(df.reindex(columns=['语文', '数学', '英语','物理']))
+    print(df.reindex(index=['mr001', 'mr002', 'mr003', 'mr004', 'mr005'],columns=['语文', '数学', '英语','物理']))
+    #print(df)
+elif testcode == '3_44':
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = pd.read_excel(r'.\resource\1月.xlsx')
+    print(df.head())
+    print('=' * 30)
+    df = df.set_index(['买家会员名'])
+    print(df)
+elif testcode == '3_45':
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = pd.read_excel(r'.\resource\TB2018.xls')
+    print(df.dropna())
+    print('=' * 30)
+    print(df.dropna().reset_index(drop=True))
+elif testcode == '46':
+    excelfile = 'mrbook.xlsx'
+    df = pd.DataFrame(pd.read_excel(r'.\resource\mrbook.xlsx'))
+    pd.set_option('display.max_columns',500)
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.unicode.ambiguous_as_wide',True)
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = df.sort_values(by='销量',ascending=False)
+    print(df)
+elif testcode == '3_47':
+    df = pd.DataFrame(pd.read_excel(r'.\resource\mrbook.xlsx'))
+    pd.set_option('display.max_columns',500)
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.unicode.ambiguous_as_wide',True)
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = df.sort_values(by=['图书名称','销量'],ascending=False)
+    print(df)
+elif testcode == '3_48':
+    df = pd.DataFrame(pd.read_excel(r'.\resource\mrbook.xlsx'))
+    pd.set_option('display.max_columns',500)
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.unicode.ambiguous_as_wide',True)
+    pd.set_option('display.unicode.east_asian_width', True)
+    df1 = df.groupby(['类别'])
+    df2 = df1['销量'].sum().reset_index()
+    print(df1)
+    print(df2)
+elif testcode == '3_49':
+    dfrow = pd.DataFrame(pd.read_excel(r'.\resource\books.xls'))
+    # 设置数据显示的列数和宽度
+    pd.set_option('display.max_columns', 500)
+    pd.set_option('display.width', 1000)
+    # 解决数据输出时列名不对齐的问题
+    pd.set_option('display.unicode.ambiguous_as_wide', True)
+    pd.set_option('display.unicode.east_asian_width', True)
+
+    print('-------------------------按行数据排序-------------------------')
+    # 按照索引值为0的行，即第一行的值升序排序
+    dfrow.sort_values(by=0, ascending=True, axis=1)
+    print(dfrow.sort_values(by=0, ascending=True, axis=1))
+elif testcode == '3_50':
+    df = pd.DataFrame(pd.read_excel(r'.\resource\mrbook.xlsx'))
+    pd.set_option('display.max_columns', 500)
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.unicode.ambiguous_as_wide', True)
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = df.sort_values(by='销量',ascending=False)
+    df['顺序排名'] = df['销量'].rank(method='first', ascending=False)
+    print(df[['图书名称','销量','顺序排名']])
+elif testcode == '3_51':
+    df = pd.DataFrame(pd.read_excel(r'.\resource\mrbook.xlsx'))
+    pd.set_option('display.max_columns', 500)
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.unicode.ambiguous_as_wide', True)
+    pd.set_option('display.unicode.east_asian_width', True)
+    df = df.sort_values(by='销量',ascending=False)
+    #df['平均排名'] = df['销量'].rank(ascending=False)
+    #df['最小排名'] = df['销量'].rank(method='min', ascending=False)
+    df['最大排名'] = df['销量'].rank(method='max', ascending=False)
+    print(df)
+elif testcode == '4_01':
+    data  = [[110,105,99], [105,88,115],[109,120,130]]
+    index = [1,2,3]
+    columns = ['语文', '数学', '英语']
+    df = pd.DataFrame(data=data, index=index, columns=columns)
+    df['总成绩'] = df.sum(axis=1)
+    print(df)
+    print(df.sum(axis=0))
+    print(df.sum(axis=1))
 else:
     pass
 
