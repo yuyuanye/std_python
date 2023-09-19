@@ -630,10 +630,165 @@ def test(testcode):
         df = pd.read_csv(r'.\resource\JD.csv', encoding='gbk')
         df1 = df[['一级分类','7天点击量','订单预定']]
         print(df1.groupby('一级分类').agg({'7天点击量':['mean', 'sum'],'订单预定':['sum']}))
+    elif testcode == '4_22':
+        pd.set_option('display.max_columns',500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\1月_4-22.xlsx')
+        max1 = lambda x :x.value_counts(dropna=False).index[0]
+        print(max1)
+        df1=df.agg({'宝贝标题':[max1],'数量':['sum','mean'],'买家实际支付金额':['sum','mean']})
+        print(df1)
+    elif testcode == '4_23':
+        df = pd.read_csv(r'.\resource\JD_4-23.csv', encoding='gbk')
+        df = df.set_index(['商品名称'])
+        dict1 = {'北京出库销量':'北上广','上海出库销量':'北上广','广州出库销量':'北上广',
+                 '成都出库销量':'成都','武汉出库销量':'武汉','西安出库销量':'西安'}
+        df1 = df.groupby(dict1, axis=1).sum()
+        print(df1)
+    elif testcode == '4_24':
+        df = pd.read_csv(r'.\resource\JD_4-23.csv', encoding='gbk')
+        df = df.set_index(['商品名称'])
+        data = {'北京出库销量': '北上广', '上海出库销量': '北上广', '广州出库销量': '北上广',
+                 '成都出库销量': '成都', '武汉出库销量': '武汉', '西安出库销量': '西安'}
+        s1 = pd.Series(data)
+        #print(s1)
+        df1 = df.groupby(s1, axis=1).sum()
+        print(df1)
+    elif testcode == '4_25':
+        data = [110, 105,99,120,115]
+        index = [1,2,3,4,5]
+        df = pd.DataFrame(data=data, index=index, columns=['英语'])
+        df['升降'] = df['英语']-df['英语'].shift()
+        print(df['英语'].shift())
+        print(df)
+    elif testcode == '4_26':
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\mrbooks_4-26.xls', usecols=['买家会员名','收货地址'])
+        series=df['收货地址'].str.split(' ',expand=True)
+        #print(series)
+        df['省'] = series[0]
+        df['市'] = series[1]
+        df['区'] = series[2]
+        disp = ['省','市','区']
+        print(df[disp].head())
+    elif testcode == '4_27':
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\mrbooks_4-26.xls',usecols=['宝贝标题'])
+        df = df.join(df['宝贝标题'].str.split(',',expand=True))
+        print(df.head())
+    elif testcode == '4_28':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.DataFrame({'a':[1,2,3,4,5],'b':[(1,2),(3,4),(5,6),(7,8),(9,10)]})
+        print(df)
+        #df[['b1','b2']] = df['b'].apply(pd.Series)
+        #print(df)
+        df = df.join(df['b'].apply(pd.Series))
+        print(df)
+    elif testcode == '4_29':
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\grade.xls')
+        df = df.set_index(['班级','序号'])
+        df = df.stack()
+        print(df)
+    elif testcode == '4_30':
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\grade.xls', sheet_name='英语2')
+        df = df.set_index(['班级','序号','Unnamed: 2'])
+        df = df.unstack()
+        print(df)
+    elif testcode == '4_31':
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\grade.xls', sheet_name='英语3')
+        print(df.pivot(index='序号',columns='班级',values='得分'))
+    elif testcode == '4_32':
+        df = pd.read_excel(r'.\resource\mrbooks_4-32.xls')
+        df1 = df.groupby(['宝贝标题'])['宝贝总数量'].sum()
+        mydict = df1.to_dict()
+        for i,j in mydict.items():
+            print(i,':\t',j)
+    elif testcode == '4_33':
+        df = pd.read_excel(r'.\resource\mrbooks_4-32.xls')
+        df1=df[['买家会员名']].head()
+        list1 = df1['买家会员名'].values.tolist()
+        for s in list1:
+            print(s)
+    elif testcode == '4_34':
+        df = pd.read_excel(r'.\resource\fl4.xls')
+        df1 = df[['label1', 'label2']].head()
+        tuples = [tuple(x) for x in df1.values]
+        for t in tuples:
+            print(t)
+    elif testcode == '4_35':
+        df = pd.read_excel(r'.\resource\mrbooks_4-35.xls')
+        df.to_html(r'.\resource\mrbook.html',header= True, index=False)
+    elif testcode == '4_36':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号':['mr001','mr002','mr003'],
+                            '语文':[110,105,109],
+                            '数学':[105,88,120],
+                            '英语':[99,115,130]})
+        df2 = pd.DataFrame({'编号':['mr001','mr002','mr003'],
+                            '体育':[34.5,39.7,38]})
+        df_merge = pd.merge(df1,df2,on='编号')
+        print(df_merge)
+    elif testcode == '4_37':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号':['mr001','mr002','mr003'],
+                            '语文':[110,105,109],
+                            '数学':[105,88,120],
+                            '英语':[99,115,130]})
+        df2 = pd.DataFrame({'编号':['mr001','mr002','mr003'],
+                            '体育':[34.5,39.7,38]})
+        df_merge = pd.merge(df1,df2,right_index=True, left_index=True)
+        print(df_merge)
+    elif testcode == '4_38':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003'],
+                            '语文': [110, 105, 109],
+                            '数学': [105, 88, 120],
+                            '英语': [99, 115, 130]})
+        df2 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003'],
+                            '体育': [34.5, 39.7, 38]})
+        df_merge = pd.merge(df1, df2, on='编号',how='left')
+        print(df_merge)
+    elif testcode == '4_39':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号':['mr001','mr002','mr003'],
+                            '学生姓名':['明日同学','高圆圆','钱多多']})
+        df2 = pd.DataFrame({'编号': ['mr001', 'mr001', 'mr003'],
+                            '语文': [110, 105, 109],
+                            '数学': [105, 88, 120],
+                            '英语': [99, 115, 130],
+                            '时间':['1月','2月','3月']})
+        df_merge1 = pd.merge(df1, df2, on='编号')
+        print(df_merge1)
+        df_merge2 = pd.merge(df2, df1, on='编号')
+        print(df_merge2)
+    elif testcode == '4_40':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003','mr001','mr001'],
+                            '体育': [34.5, 39.7, 38,33,35]})
+        df2 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003', 'mr003', 'mr003'],
+                            '语文': [110, 105, 109,110,108],
+                            '数学': [105, 88, 120,123,119],
+                            '英语': [99, 115, 130,109,128]})
+        df_merge=pd.merge(df1,df2)
+        print(df_merge)
     else:
         pass
 if __name__ == '__main__':
-    test('4_21')
+    test('4_40')
 
 
 
