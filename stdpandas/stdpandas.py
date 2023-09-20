@@ -5,6 +5,7 @@
 import pandas
 import pandas as pd
 import numpy as np
+import glob
 
 #testcode = '4_19'
 
@@ -785,10 +786,161 @@ def test(testcode):
                             '英语': [99, 115, 130,109,128]})
         df_merge=pd.merge(df1,df2)
         print(df_merge)
+    elif testcode == '4_41':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003', 'mr001', 'mr001'],
+                            '体育': [34.5, 39.7, 38, 33, 35]})
+        df2 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003', 'mr003', 'mr003'],
+                            '语文': [110, 105, 109, 110, 108],
+                            '数学': [105, 88, 120, 123, 119],
+                            '英语': [99, 115, 130, 109, 128]})
+        df_merge = pd.merge(df1, df2)
+        #df_merge = df_merge.set_index('编号')
+        print(df_merge)
+        df_merge.to_excel(r'.\resource\merge_4_41.xlsx')
+    elif testcode == '4_42':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003', 'mr001', 'mr001'],
+                            '体育': [34.5, 39.7, 38, 33, 35]})
+        df2 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003', 'mr003', 'mr003'],
+                            '语文': [110, 105, 109, 110, 108],
+                            '数学': [105, 88, 120, 123, 119],
+                            '英语': [99, 115, 130, 109, 128]})
+        df_merge = pd.merge(df1, df2)
+        # df_merge = df_merge.set_index('编号')
+        #print(df_merge)
+        #df_merge.to_excel(r'.\resource\merge_4_41.xlsx')
+        #df_merge.to_csv(r'.\resource\merge_4_41.csv')
+        #df_merge.to_csv(r'.\resource\merge_4_41.csv',sep='?')
+        #df_merge.to_csv(r'.\resource\merge_4_41.csv', float_format='%.2f')
+        #df_merge.to_csv(r'.\resource\merge_4_41.csv', columns=['数学','体育'])
+        #df_merge.to_csv(r'.\resource\merge_4_41.csv', header=False)
+        #df_merge.to_csv(r'.\resource\merge_4_41.csv', index=True)
+        df_merge.to_csv(r'.\resource\merge_4_41.csv', index=False)
+    elif testcode == '4_43':
+        work = pd.ExcelWriter(r'.\resource\writetest.xlsx')
+        pd.set_option('display.unicode.east_asian_width', True)
+        df1 = pd.DataFrame({'编号': ['mr001', 'mr002', 'mr003', 'mr001', 'mr001'],
+                            '体育': [34.5, 39.7, 38, 33, 35]})
+        df1.to_excel(work, sheet_name='df1')
+        df1['体育'].to_excel(work, sheet_name='df2')
+        work.close()
+    elif testcode == '4_44':
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.DataFrame({'原日期':['14-feb-20','02/14/2020','2020.02.14','2020/02/14','20200214']})
+        df['转换后的日期']=pd.to_datetime(df['原日期'])
+        print(df)
+    elif testcode == '4_45':
+        df = pd.DataFrame({'year':[2018,2019,2020],
+                            'month':[1,3,2],
+                           'day':[4,5,14],
+                           'hour':[13,8,2],
+                           'minute':[23,12,14],
+                           'second':[2,4,0]})
+        df['组合后的日期'] = pd.to_datetime(df)
+        print(df)
+    elif testcode == '4_46':
+        df = pd.DataFrame({'year': [2018, 2019, 2020],
+                           'month': [1, 3, 2],
+                           'day': [4, 5, 14],
+                           'hour': [13, 8, 2],
+                           'minute': [23, 12, 14],
+                           'second': [2, 4, 0]})
+        df['日期'] = pd.to_datetime(df)
+        #df['年'],df['月'],df['日'] = df['日期'].dt.year, df['日期'].dt.month,df['日期'].dt.day
+        #df['星期几'] = df['日期'].dt.day_name()
+        #df['季度'] = df['日期'].dt.quarter
+        df['是否年底'] = df['日期'].dt.is_year_end
+        print(df)
+    elif testcode == '4_47':
+        pd.set_option('display.unicode.ambiguous_as_wide', True)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\mingribooks_4-47.xls')
+        df1 = df[['订单付款时间','买家会员名','联系手机','买家实际支付金额']]
+        df1 = df1.sort_values(by=['订单付款时间'])
+        df1 = df1.set_index('订单付款时间')
+        print(df1['2018-05-11':'2018-05-15'])
+    elif testcode == '4_48':
+        pd.set_option('display.unicode.ambiguous_as_wide', True)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.read_excel(r'.\resource\TB2018_4-48.xls')
+        df1 = df[['订单付款时间', '买家会员名', '联系手机', '买家实际支付金额']]
+        df1 = df1.set_index('订单付款时间')  # 将date设置为index
+        #print(df1.to_period('A'))
+        #print(df1.to_period('Q'))
+        #print(df1.to_period('M'))
+        #print(df1.to_period('W'))
+        #df2 = df1.resample('AS').sum().to_period('A')
+        #df2 = df1.resample('Q').sum().to_period('Q')
+        #df2 = df1.resample('M').sum().to_period('M')
+        df2 = df1.resample('W').sum().to_period('W')
+        print(df2)
+    elif testcode == '4_49':
+        index = pd.date_range('02/02/2020', periods=9, freq='T')
+        series = pd.Series(range(9), index=index)
+        print(series)
+        print(series.resample('3T').sum())
+    elif testcode == '4_50':
+        df = pd.read_excel(r'.\resource\time.xls')
+        df1 = df[['买家实际支付金额','宝贝总数量','订单付款时间']]
+        df1 = df1.set_index('订单付款时间')
+        print(df1.resample('W').sum().head())
+    elif testcode == '4_51':
+        rng = pd.date_range('20200202',periods=2)
+        #print(rng)
+        s1 = pd.Series(np.arange(1,3), index=rng)
+        s1_6h_asfreq = s1.resample('6H').asfreq()
+        #print(s1_6h_asfreq)
+        #s1_6h_pad = s1.resample('6H').pad()
+        #print(s1_6h_pad)
+        #s1_6h_ffill = s1.resample('6H').ffill()
+        #print(s1_6h_ffill)
+        s1_6h_bfill = s1.resample('6H').bfill()
+        print(s1_6h_bfill)
+    elif testcode == '4_52':
+        rng = pd.date_range('2/2/2020',periods=12,freq='T')
+        s1 = pd.Series(np.arange(12), index =rng)
+        print(s1)
+        print(s1.resample('5min').ohlc())
+    elif testcode == '4_53':
+        index =pd.date_range('20200201','20200215')
+        data=[3,6,7,4,2,1,3,8,9,10,12,15,13,22,14]
+        s1_data=pd.Series(data,index=index)
+        print(s1_data)
+    elif testcode == '4_54':
+        index = pd.date_range('20200201', '20200215')
+        data = [3, 6, 7, 4, 2, 1, 3, 8, 9, 10, 12, 15, 13, 22, 14]
+        s1_data = pd.Series(data, index=index)
+        s2= s1_data.rolling(3).mean()
+        #print(s1_data)
+        print(s2)
+    elif testcode == '4_55':
+        index = pd.date_range('20200201', '20200215')
+        data = [3, 6, 7, 4, 2, 1, 3, 8, 9, 10, 12, 15, 13, 22, 14]
+        s1_data = pd.Series(data, index=index)
+        s2= s1_data.rolling(3,min_periods=1).mean()
+        #print(s1_data)
+        print(s2)
+    elif testcode == '4_e1':
+        filearray=[]
+        filelocation=glob.glob(r'.\resource\aa\*.xlsx')
+        for filename in filelocation:
+            filearray.append(filename)
+            print(filename)
+        res = pd.read_excel(filearray[0])
+        for i in range(1, len(filearray)):
+            A = pd.read_excel(filearray[i])
+            res = pd.concat([res,A], ignore_index=True, sort=False)
+        print(res.index)
+        #res = res.sort_values(by=['时间'])
+        writer = pd.ExcelWriter(r'.\resource\all.xlsx')
+        res.to_excel(writer,'sheet1')
+        writer.close()
+
     else:
         pass
 if __name__ == '__main__':
-    test('4_40')
+    test('4_e1')
 
 
 
