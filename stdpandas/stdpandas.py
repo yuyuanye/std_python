@@ -6,6 +6,7 @@ import pandas
 import pandas as pd
 import numpy as np
 import glob
+import matplotlib.pyplot as plt
 
 #testcode = '4_19'
 
@@ -936,11 +937,228 @@ def test(testcode):
         writer = pd.ExcelWriter(r'.\resource\all.xlsx')
         res.to_excel(writer,'sheet1')
         writer.close()
+    elif testcode == '4_e2':
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        pd.set_option('display.unicode.ambiguous_as_wide', True)
+        pd.set_option('display.unicode.east_asian_width', True)
+        df = pd.DataFrame(pd.read_excel(r'.\resource\000001.xlsx'))
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.set_index('date')
+        df = df[['close']]
+        df['20天'] = np.round(df['close'].rolling(window=20, center=False).mean(),2)
+        df['50天'] = np.round(df['close'].rolling(window=50, center=False).mean(), 2)
+        df['200天'] = np.round(df['close'].rolling(window=200, center=False).mean(), 2)
+        plt.rcParams['font.sans-serif']=['SimHei']
+        df.plot(secondary_y = ['收盘价','20','50','200'],grid = True)
+        plt.legend(('收盘价','20天','50天','200天'),loc='upper right')
+        plt.show()
+    elif testcode == '5_01':
+        plt.plot([1,2,3,4,5])
+        plt.show()
+    elif testcode == '5_02':
+        plt.plot([1,2,3,4,5],[2,5,8,12,18],'ro')
+        plt.show()
+    elif testcode == '5_03':
+        x = range(1,15,1)
+        y = range(1,42,3)
+        plt.plot(x,y)
+        plt.show()
+    elif testcode == '5_04':
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        #print(x)
+        #print(y)
+        plt.plot(listx,listy)
+        plt.show()
+    elif testcode == '5_05':
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        # print(x)
+        # print(y)
+        fig = plt.figure(figsize=(5, 3), facecolor='yellow')
+        plt.plot(listx, listy)
+        plt.show()
+    elif testcode == '5_06':
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        plt.plot(listx,listy,color='m',linestyle='-',marker='o',mfc='w')
+        plt.xlabel('2020年2月')
+        plt.ylabel('基础体温')
+        plt.show()
+    elif testcode == '5_07':
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        plt.xticks(range(1,15,1))
+        plt.plot(listx, listy, color='m', linestyle='-', marker='o', mfc='w')
+        plt.xlabel('2020年2月')
+        plt.ylabel('基础体温')
+        plt.show()
+    elif testcode == '5_08':
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        dates = ['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日','13日','14日']
+        plt.xticks(range(1,15,1),dates)
+        plt.plot(listx, listy, color='m', linestyle='-', marker='o', mfc='w')
+        plt.xlabel('2020年2月')
+        plt.ylabel('基础体温')
+        plt.show()
+    elif testcode == '5_09':
+        subtest = 2
+        if subtest == 1:
+            plt.rcParams['font.sans-serif'] = ['SimHei']
+            df = pd.read_excel(r'.\resource\05\体温.xls')
+            x = df['日期']
+            y = df['体温']
+            listx = x.values.tolist()
+            listy = y.values.tolist()
+            dates = ['1日', '2日', '3日', '4日', '5日', '6日', '7日', '8日', '9日', '10日', '11日', '12日', '13日', '14日']
+            plt.xticks(range(1, 15, 1), dates)
+            plt.plot(listx, listy, color='m', linestyle='-', marker='o', mfc='w')
+            plt.xlabel('2020年2月')
+            plt.ylabel('基础体温')
+            plt.xlim(1,14)
+            plt.ylim(35,45)
+            plt.show()
+        else:
+            plt.rcParams['font.sans-serif'] = ['SimHei']
+            df = pd.read_excel(r'.\resource\05\体温.xls')
+            x = df['日期']
+            y = df['体温']
+            listx = x.values.tolist()
+            listy = y.values.tolist()
+            dates = ['1日', '2日', '3日', '4日', '5日', '6日', '7日', '8日', '9日', '10日', '11日', '12日', '13日', '14日']
+            plt.xticks(range(1, 15, 1), dates)
+            plt.plot(listx, listy, color='m', linestyle='-', marker='o', mfc='w')
+            plt.xlabel('2020年2月')
+            plt.ylabel('基础体温')
+            plt.grid(color='0.5',linestyle='--',linewidth=1)
+            plt.show()
+    elif testcode =='5_10':
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        dates = ['1日', '2日', '3日', '4日', '5日', '6日', '7日', '8日', '9日', '10日', '11日', '12日', '13日', '14日']
+
+        plt.plot(listx, listy, color='m', linestyle='-', marker='o', mfc='w')
+        plt.xlabel('2020年2月')
+        plt.ylabel('基础体温')
+        plt.xticks(range(1, 15, 1), dates)
+        plt.yticks([35.4, 35.6, 35.8, 36, 36.2, 36.4, 36.6, 36.8,
+                    37, 37.2, 37.4, 37.6, 37.8, 38])
+        #plt.grid(color='0.5', linestyle='--', linewidth=1)
+        for a,b in zip(listx,listy):
+            plt.text(a,b+3,'%.1f'%b,ha='center', va='bottom',fontsize=9)
+        plt.show()
+    elif testcode =='5_11':
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df = pd.read_excel(r'.\resource\05\体温.xls')
+        x = df['日期']
+        y = df['体温']
+        listx = x.values.tolist()
+        listy = y.values.tolist()
+        dates = ['1日', '2日', '3日', '4日', '5日', '6日', '7日', '8日', '9日', '10日', '11日', '12日', '13日', '14日']
+        plt.plot(listx, listy, color='m', linestyle='-', marker='o', mfc='w')
+        plt.xlabel('2020年2月')
+        plt.ylabel('基础体温')
+        plt.xticks(range(1, 15, 1), dates)
+        plt.yticks([35.4, 35.6, 35.8, 36, 36.2, 36.4, 36.6, 36.8,
+                    37, 37.2, 37.4, 37.6, 37.8, 38])
+        #plt.grid(color='0.5', linestyle='--', linewidth=1)
+        for a,b in zip(listx,listy):
+            plt.text(a,b+3,'%.1f'%b,ha='center', va='bottom',fontsize=9)
+        plt.annotate('最高体温',xy=(9,37.1),xytext=(10.5,37.1), xycoords='data',arrowprops=dict(facecolor='r',shrink=0.05))
+        plt.show()
+    elif testcode == '5_12':
+        df1 = pd.read_excel(r'.\resource\05\data.xls')
+        x1 = df1['姓名'].values.tolist()
+        #print(x1)
+        y1 = df1['语文'].values.tolist()
+        y2 = df1['数学'].values.tolist()
+        y3 = df1['英语'].values.tolist()
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['xtick.direction'] = 'out'
+        plt.rcParams['ytick.direction'] = 'in'
+        plt.title('语数外成绩大比拼', fontsize='18')
+        plt.plot(x1,y1,label='语文',color='r',marker='p')
+        plt.plot(x1,y2,label='数学',color='g',marker='.',mfc='r',ms=8,alpha=0.7)
+        plt.plot(x1,y3,label='英语',color='b', linestyle='-.',marker='*')
+        plt.grid(axis='y')
+        plt.ylabel('分数')
+        plt.yticks(range(50,150,10))
+        plt.legend(['语文','数学','英语'])
+        plt.show()
+    elif testcode == '5_13':
+        x = [1,2,3,4,5,6]
+        height = [10,20,30,40,50,60]
+        plt.bar(x,height)
+        plt.show()
+    elif testcode == '5_14':
+        df = pd.read_excel(r'.\resource\05\books.xlsx')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x = df['年份']
+        print(x)
+        height = df['销售额']
+        plt.grid(axis='y', which='major')
+        plt.xlabel('年份')
+        plt.ylabel('线上销售额（元）')
+        plt.title('2013-2019年线上图书销售额分析图')
+        plt.bar(x, height,width=0.5,align='center',color='b',alpha=0.5)
+        for a,b in zip(x,height):
+            plt.text(a,b,format(b,','), ha='center',va='bottom',fontsize=9, color='b',alpha=0.9)
+        plt.legend(['销售额'])
+        plt.show()
+    elif testcode == '5_15':
+        df = pd.read_excel(r'.\resource\05\books.xlsx', sheet_name='Sheet2')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x = df['年份']
+        y1 = df['京东']
+        y2 = df['天猫']
+        y3 = df['自营']
+        width= 0.25
+        plt.ylabel('线上销售额（元）')
+        plt.title('2013-2019线上销售额分析图')
+        plt.bar(x, y1, width=width, color='darkorange')
+        plt.bar(x+width, y2, width= width,color='deepskyblue')
+        plt.bar(x+2*width, y3, width= width, color='g')
+        for a,b in zip(x,y1):
+            plt.text(a, b, format(b,','), ha='center', va='bottom',fontsize=8)
+        for a, b in zip(x, y2):
+            plt.text(a+width, b, format(b, ','), ha='center', va='bottom', fontsize=8)
+        for a, b in zip(x, y3):
+            plt.text(a+2*width, b, format(b, ','), ha='center', va='bottom', fontsize=8)
+        plt.legend(['京东','天猫','自营'])
+        plt.show()
+    elif testcode == '5_16':
+        x = [22,87,5,43,56,73,55,54,11,20,51,5,79,31,27]
+        plt.hist(x, bins=[0,25,50,75,100])
+        plt.show()
 
     else:
         pass
 if __name__ == '__main__':
-    test('4_e1')
+    test('5_16')
 
 
 
