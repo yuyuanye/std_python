@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import glob
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 #testcode = '4_19'
 
@@ -1154,11 +1155,208 @@ def test(testcode):
         x = [22,87,5,43,56,73,55,54,11,20,51,5,79,31,27]
         plt.hist(x, bins=[0,25,50,75,100])
         plt.show()
-
+    elif testcode == '5_17':
+        df = pd.read_excel(r'.\resource\05\grade1.xls')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x = df['得分']
+        plt.xlabel('分数')
+        plt.ylabel('学生数量')
+        plt.title('高一数学成绩分布直方图')
+        plt.hist(x, bins=[0,25,75,100,125,150],facecolor='blue', edgecolor='black', alpha=0.7)
+        plt.show()
+    elif testcode == '5_18':
+        x = [2,5,12,70,2,9]
+        plt.pie(x, autopct='%1.1f%%')
+        plt.show()
+    elif testcode == '5_19':
+        df1 = pd.read_excel(r'.\resource\05\data2.xls')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.figure(figsize=(5,3))
+        labels = df1['省']
+        sizes = df1['销量']
+        #print(labels)
+        #print(sizes)
+        colors = ['red','yellow','slateblue','green','magenta','cyan','darkorange','lawngreen','pink','gold']
+        plt.pie(sizes, labels= labels,colors=colors,labeldistance=1.02,autopct='%.1f%%',
+                startangle=90,radius=0.5, center=(0.2,0.2),textprops={'fontsize':9,'color':'k'},
+                pctdistance=0.6)
+        plt.axis('equal')
+        plt.title('2020年1月各省销量占比情况分析')
+        plt.show()
+    elif testcode == '5_20':
+        df1 = pd.read_excel(r'.\resource\05\data2.xls')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.figure(figsize=(5, 3))
+        labels = df1['省']
+        sizes = df1['销量']
+        # print(labels)
+        # print(sizes)
+        colors = ['red', 'yellow', 'slateblue', 'green', 'magenta', 'cyan', 'darkorange', 'lawngreen', 'pink', 'gold']
+        plt.pie(sizes, labels=labels, colors=colors, labeldistance=1.02, autopct='%.1f%%',
+                startangle=90, radius=0.5, center=(0.2, 0.2), textprops={'fontsize': 9, 'color': 'k'},
+                pctdistance=0.6,explode=(0.3,0,0,0,0.1,0,0,0,0,0),shadow=True)
+        plt.axis('equal')
+        plt.title('2020年1月各省销量占比情况分析')
+        plt.show()
+    elif testcode == '5_21':
+        df1 = pd.read_excel(r'.\resource\05\data2.xls')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.figure(figsize=(5, 3))
+        labels = df1['省']
+        sizes = df1['销量']
+        # print(labels)
+        # print(sizes)
+        colors = ['red', 'yellow', 'slateblue', 'green', 'magenta', 'cyan', 'darkorange', 'lawngreen', 'pink', 'gold']
+        '''
+        plt.pie(sizes, labels=labels, colors=colors, labeldistance=1.02, autopct='%.1f%%',
+                startangle=90, radius=0.5, center=(0.2, 0.2), textprops={'fontsize': 9, 'color': 'k'},
+                pctdistance=0.6,explode=(0.3,0,0,0,0.1,0,0,0,0,0),shadow=True)
+        '''
+        plt.pie(sizes, labels=labels, colors=colors, labeldistance=1.02, autopct='%.1f%%',
+                startangle=90, radius=0.5, center=(0.2, 0.2), textprops={'fontsize': 9, 'color': 'k'},
+                pctdistance=0.6, wedgeprops={'width':0.2,'edgecolor':'k'})
+        plt.axis('equal')
+        plt.title('2020年1月各省销量占比情况分析')
+        plt.show()
+    elif testcode == '5_22':
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df1 = pd.read_excel(r'.\resource\05\data2.xls')
+        df2 = pd.read_excel(r'.\resource\05\data2.xls', sheet_name='2月')
+        # 数据集，x1,x2分别对应外环、内环百分比例
+        x1 = df1['销量']
+        x2 = df2['销量']
+        # 设置饼状图各个区块的颜色
+        colors = ['red', 'yellow', 'slateblue', 'green', 'magenta', 'cyan', 'darkorange', 'lawngreen', 'pink', 'gold']
+        plt.pie(x1, autopct='%.1f%%',radius=1,pctdistance=0.85,colors=colors,
+                wedgeprops=dict(linewidth=2,width=0.3,edgecolor='w'))
+        plt.pie(x2, autopct='%.1f%%', radius=0.7, pctdistance=0.7, colors=colors,
+                wedgeprops=dict(linewidth=2, width=0.4, edgecolor='w'))
+        legend_text= df1['省']
+        plt.legend(legend_text, title='地区',frameon=False, bbox_to_anchor=(0.2,0.5))
+        plt.show()
+    elif testcode == '5_23':
+        x = [1,2,3,4,5,6]
+        y=[19,24,37,43,55,68]
+        plt.scatter(x,y)
+        plt.show()
+    elif testcode == '5_24':
+        dfaa = pd.read_excel(r'.\resource\05\JDdata.xls')
+        dfbb = pd.read_excel(r'.\resource\05\JDcar.xls')
+        df1 = dfaa[['业务日期','金额']]
+        df2 = dfbb[['投放日期', '支出']]
+        df1 = df1[df1['业务日期'].notnull() & df1['金额'] !=0 ]
+        df2 = df2[df2['投放日期'].notnull() & df2['支出'] != 0]
+        df1['业务日期'] = pd.to_datetime(df1['业务日期'])
+        df2['投放日期'] = pd.to_datetime(df2['投放日期'])
+        dfData = df1.set_index('业务日期', drop=True)
+        dfcar = df2.set_index('投放日期', drop=True)
+        df_data_month = dfData.resample('M').sum().to_period('M')
+        df_car_month = dfcar.resample('M').sum().to_period('M')
+        x = pd.DataFrame(df_car_month['支出'])
+        y = pd.DataFrame(df_data_month['金额'])
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.title('销售收入与广告费散点图')
+        plt.scatter(x,y,color='red')
+        plt.show()
+    elif testcode == '5_25':
+        x = [1,2,3,4,5]
+        y1=[6,9,5,8,4]
+        y2=[3,2,5,4,3]
+        y3=[8,7,8,4,3]
+        y4=[7,4,6,7,12]
+        plt.stackplot(x, y1,y2,y3,y4, colors=['g','c','r','b'])
+        plt.show()
+    elif testcode == '5_26':
+        df = pd.read_excel(r'.\resource\05\books_5-26.xlsx')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x = df['年份']
+        y = df['销售额']
+        plt.title('2013-2019年线上图书销售情况')
+        plt.stackplot(x,y)
+        plt.show()
+    elif testcode == '5_27':
+        df = pd.read_excel(r'.\resource\05\books_5-26.xlsx', sheet_name='Sheet2')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x = df['年份']
+        y1 = df['京东']
+        y2 = df['天猫']
+        y3 = df['自营']
+        #y = df['销售额']
+        plt.title('2013-2019年线上图书销售情况')
+        plt.stackplot(x,y3,y2,y1, colors=['#6d904f','#fc4f30','#008fd5'])
+        plt.legend(['京东','天猫','自营'], loc='upper left')
+        plt.show()
+    elif testcode == '5_28':
+        x = [[1,2], [3,4],[5,6],[7,8],[9,10]]
+        plt.imshow(x)
+        plt.show()
+    elif testcode == '5_29':
+        df = pd.read_excel(r".\resource\05\data1_5-29.xls", sheet_name='高二一班')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x =df.loc[:,'语文':"生物"].values
+        name = df['姓名']
+        plt.imshow(x)
+        plt.xticks(range(0,6,1),['语文','数学','英语','物理','化学','生物'])
+        plt.yticks(range(0,12,1),name)
+        plt.colorbar()
+        plt.title('学生成绩统计热力图')
+        plt.show()
+    elif testcode == '5_30':
+        x = [1,2,3,5,7,9]
+        plt.boxplot(x)
+        plt.show()
+    elif testcode == '5_31':
+        x1= [1,2,3,5,7,9]
+        x2=[10,22,16,15,8,19]
+        x3=[18,31,18,19,14,29]
+        plt.boxplot([x1,x2,x3])
+        plt.show()
+    elif testcode == '5_32':
+        df = pd.read_excel(r'.\resource\05\tips.xlsx')
+        plt.boxplot(x = df['总消费'],
+                    whis=1.5,
+                    widths=0.3,
+                    patch_artist=True,
+                    showmeans=True,
+                    boxprops={'facecolor':'RoyalBlue'},
+                    flierprops={'markerfacecolor':'red','markeredgecolor':'red','markersize':3},
+                    meanprops = {'marker':'h','markerfacecolor':'black','markersize':8},
+                    medianprops={'linestyle':'--','color':'orange'},
+                    labels=[''])
+        plt.show()
+        q1 = df['总消费'].quantile(q=0.25)
+        q3 = df['总消费'].quantile(q=0.75)
+        low_limit = q1 - 1.5 * (q3-q1)
+        up_limit = q3 + 1.5 * (q3-q1)
+        val = df['总消费'][(df['总消费'] > up_limit) | (df['总消费'] < low_limit)]
+        print('异常值如下：')
+        print(val)
+    elif testcode == '5_33':
+        fig = plt.figure()
+        axes3d = Axes3D(fig)
+        zs = [1,5,10,15,20]
+        for z in zs:
+            x = np.arange(0,10)
+            y = np.random.randint(0,30,size=10)
+            axes3d.bar(x, y,zs=z, zdir='x', color=['r','green','yellow','c'])
+        plt.show()
+    elif testcode == '5_34':
+        fig = plt.figure()
+        #axe3d = Axes3D(fig)
+        axe3d = Axes3D(fig, auto_add_to_figure=False)
+        fig.add_axes(axe3d)
+        x = np.arange(-4.0,4.0,0.125)
+        y = np.arange(-3.0,3.0,0.125)
+        X,Y = np.meshgrid(x,y)
+        Z1 = np.exp(-X**2-Y**2)
+        Z2 = np.exp(-(X-1)**2 - (Y-1)**2)
+        Z = (Z1 -Z2)*2
+        axe3d.plot_surface(X,Y,Z,cmap=plt.get_cmap('rainbow'))
+        plt.show()
     else:
         pass
 if __name__ == '__main__':
-    test('5_16')
+    test('5_34')
 
 
 
