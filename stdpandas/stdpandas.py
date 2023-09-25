@@ -8,6 +8,7 @@ import numpy as np
 import glob
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.axes3d import Axes3D
+import seaborn as sns
 
 #testcode = '4_19'
 
@@ -1353,10 +1354,202 @@ def test(testcode):
         Z = (Z1 -Z2)*2
         axe3d.plot_surface(X,Y,Z,cmap=plt.get_cmap('rainbow'))
         plt.show()
+    elif testcode == '5_35':
+        plt.subplot(2,3,1)
+        plt.subplot(2, 3, 2)
+        plt.subplot(2, 3, 3)
+        plt.subplot(2, 3, 4)
+        plt.subplot(2, 3, 5)
+        plt.subplot(2, 3, 6)
+        plt.show()
+    elif testcode == '5_36':
+        plt.subplot(2,2,1)
+        plt.plot([1,2,3,4,5])
+        plt.subplot(2,2,2)
+        plt.plot([1,2,3,4,5],[2,5,8,12,18],'ro')
+        plt.subplot(2,1,2)
+        x = [1,2,3,4,5,6]
+        height=[10,20,30,40,50,60]
+        plt.bar(x,height)
+        plt.show()
+    elif testcode == '5_37':
+        figure,axes = plt.subplots(2,3)
+        plt.show()
+    elif testcode == '5_38':
+        figure,axes = plt.subplots(2, 2)
+        axes[0,0].plot([1,2,3,4,5])
+        axes[0,1].plot([1,2,3,4,5],[2,5,8,10,12],'ro')
+        x = [1,2,3,4,5]
+        height = [10,20,30,40,50]
+        axes[1,0].bar(x,height)
+        x = [2,5,12,70,2,9]
+        axes[1,1].pie(x, autopct='%1.1f%%')
+        plt.show()
+    elif testcode == '5_39':
+        fig = plt.figure()
+        ax1 = fig.add_subplot(2,3,1)
+        ax3 = fig.add_subplot(2, 3, 3)
+        ax5 = fig.add_subplot(2, 3, 5)
+        plt.show()
+    elif testcode == '5_e1':
+        df = pd.read_excel(r'.\resource\05\mrbook_5-e1.xlsx')
+        x = [1,2,3,4,5,6]
+        y1 = df['销量']
+        y2= df['rate'].values.tolist()
+
+        fig = plt.figure()
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        ax1 = fig.add_subplot(111)
+        plt.title('销量情况对比')
+        plt.xticks(x,['1月','2月','3月','4月','5月','6月'])
+        ax1.bar(x,y1,label='left')
+        ax1.set_ylabel('销量（册）')
+        ax2 = ax1.twinx()
+        ax2.plot(x,y2,color='black',linestyle='--',marker='o',linewidth=2,label=u'增长率')
+        ax2.set_ylabel(u'增长率')
+        for a,b in zip(x,y2):
+            plt.text(a, b+0.02, "%.2f" %b, ha='center',va = 'bottom',fontsize=10,color='red')
+        plt.show()
+    elif testcode == '5_e2':
+        sns.set_style('darkgrid')
+        file = '.\\resource\\05\\mrtb_data.xlsx'
+        df = pd.DataFrame(pd.read_excel(file))
+        #print(df)
+        plt.rc('font',family='SimHei',size=13)
+        df1 = df.groupby(['类别'])['买家实际支付金额'].sum()
+        #print(df1)
+        df2 = df.groupby(['类别','性别'])['买家会员名'].count().reset_index()
+        #df3 = df.groupby(['类别', '性别'])['买家会员名'].count()
+        #print(df2)
+        #print(df3)
+        men_df = df2[df2['性别'] == '男']
+        women_df = df2[df2['性别'] == '女']
+        men_list = list(men_df['买家会员名'])
+        women_list = list(women_df['买家会员名'])
+        num =np.array(list(df1))
+        ratio = np.array(men_list)/(np.array(men_list)+np.array(women_list))
+        np.set_printoptions(precision=2)
+        men = num * ratio
+        women = num * (1-ratio)
+        df3 = df2.drop_duplicates(['类别'])
+        name = (list(df3['类别']))
+        x = name
+        width = 0.5
+        idx = np.arange(len(x))
+        plt.bar(idx,men,width,color='slateblue',label='男性用户')
+        plt.bar(idx,women,width,bottom=men,color='orange',label='女性用户')
+        plt.xlabel('消费类别')
+        plt.ylabel('男女分布')
+        plt.xticks(idx +width/2, x, rotation=20)
+        for a,b in zip(idx,men):
+            plt.text(a,b, '%0.f' %b ,ha='center',va='top',fontsize=12)
+        for a,b,c in zip(idx,women,men):
+            plt.text(a,b+c+0.5,'%0f' % b, ha='center',va='bottom',fontsize=12)
+        plt.legend()
+        plt.show()
+    elif testcode == '5_e3':
+        from matplotlib import cm
+        from matplotlib import font_manager as fm
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.style.use('ggplot')
+        shapes =['天津', '江西省', '安徽省', '云南省', '福建省', '河南省', '辽宁省',
+       '重庆', '湖南省', '四川省', '北京', '上海', '广西壮族自治区', '河北省',
+       '浙江省', '江苏省', '湖北省', '山东省', '广东省']
+        values = [287,383,842,866,1187,1405,1495,1620,1717,
+                  2313,2378,3070,4332,5814,6842,7785,9358,9818,20254]
+        s = pd.Series(values, index=shapes)
+        labels = s.index
+        sizes = s.values
+        fig,ax = plt.subplots(figsize=(6,6))
+        colors = cm.rainbow(np.arange(len(sizes))/len(sizes))
+        patches,texts,autotexts = ax.pie(sizes,labels=labels,autopct='%1.0f%%',shadow=False,startangle=170,colors=colors)
+        ax.axis('equal')
+        ax.set_title('各省线上图书销售占比图',loc='left')
+        proptease = fm.FontProperties()
+        proptease.set_size('small')
+        plt.setp(autotexts, fontproperties=proptease)
+        plt.setp(texts, fontproperties=proptease)
+        plt.show()
+    elif testcode == '5_e4':
+        def f(x,y):
+            return (1-x/2+x**5+y**3) * np.exp(-x**2-y**2)
+        n =256
+        x = np.linspace(-3,3,n)
+        y = np.linspace(-3, 3, n)
+        X,Y=np.meshgrid(x,y)
+        plt.contourf(X,Y,f(X,Y))
+        plt.show()
+    elif testcode == '5_e5':
+        sns.set()
+        plt.figure(figsize=(6,6))
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df = pd.read_csv(r'.\resource\05\data_5-e5.csv', encoding='gb2312')
+        series = df['中奖号码'].str.split('  ',expand=True)
+        df1 = df.groupby(series[0]).size()
+        df2 = df.groupby(series[1]).size()
+        df3 = df.groupby(series[2]).size()
+        df4 = df.groupby(series[3]).size()
+        df5 = df.groupby(series[4]).size()
+        df6 = df.groupby(series[5]).size()
+        df7 = df.groupby(series[6]).size()
+        data = pd.concat([df1,df2,df3,df4,df5,df6,df7],axis=1,sort=True)
+        print(data)
+        data = data.fillna(0)
+        data = data.round(0).astype(int)
+        plt.title('统计2014-2019双色球中奖数字热力图')
+        sns.heatmap(data, annot=True, fmt='d',lw=0.5)
+        plt.xlabel('中奖号码位数')
+        plt.ylabel('双色球数字')
+        x = ['第1位','第2位','第3位','第4位','第5位','第6位','第7位']
+        plt.xticks(range(0,7,1),x,ha='left')
+        plt.show()
+    elif testcode == '7_e1':
+        df = pd.read_excel(r'.\resource\07\car.xlsx')
+        df1 = df.head(10)
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        x = df1['车型']
+        y = df1['1月销量']
+        plt.subplots_adjust(left=0.2)
+        plt.tick_params(bottom=False, left=False)
+        plt.yticks(range(10))
+        plt.title('2020年1月国产品牌汽车销量TOP10')
+        plt.barh(x,y,color='Turquoise')
+        plt.show()
+    elif testcode == '7_e2':
+        df = pd.read_excel(r'.\resource\07\JD2019.xlsx')
+
+        df['日期'] = pd.to_datetime(df['日期'])
+        df = df.set_index('日期')
+        #print(df.head(10))
+        df1 = pd.concat([df.loc['2019-02'],df.loc['2020-02']])
+        #print(df1)
+        df1 = df1[df1['商品名称']=='零基础学Python（全彩版）']
+        df1 = df1[['北京','上海','广州','成都','武汉','沈阳','西安']]
+        df2 = df1.T
+        print(df1)
+        print(df2)
+        x = np.array([0,1,2,3,4,5,6])
+        y1 = df2['2019-02-01']
+        y2 = df2['2020-02-01']
+        df2['rate']=(df2['2020-02-01']-df2['2019-02-01'])/df2['2019-02-01']*100
+        y = df2['rate']
+        print(y)
+        width = 0.25
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.title('全国各地区销量及同比增长情况')
+        plt.ylabel('销售数量（册）')
+        plt.xticks(x,['北京','上海','广州','成都','武汉','沈阳','西安'])
+        plt.bar(x,y1,width=width,color='orange',label='2019年2月')
+        plt.bar(x+width, y2,width=width, color='deepskyblue',label='2020年2月')
+        for a, b in zip(x,y):
+            plt.text(a,b,('%1.f%%' % b), ha='center',va='bottom',fontsize=11)
+        plt.legend()
+        plt.show()
     else:
         pass
 if __name__ == '__main__':
-    test('5_34')
+    test('7_e2')
 
 
 
