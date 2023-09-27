@@ -9,6 +9,7 @@ import glob
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 import seaborn as sns
+import matplotlib.ticker as mtick
 
 #testcode = '4_19'
 
@@ -1518,7 +1519,6 @@ def test(testcode):
         plt.show()
     elif testcode == '7_e2':
         df = pd.read_excel(r'.\resource\07\JD2019.xlsx')
-
         df['日期'] = pd.to_datetime(df['日期'])
         df = df.set_index('日期')
         #print(df.head(10))
@@ -1546,10 +1546,159 @@ def test(testcode):
             plt.text(a,b,('%1.f%%' % b), ha='center',va='bottom',fontsize=11)
         plt.legend()
         plt.show()
+    elif testcode == '7_e02_02':
+        df = pd.read_excel(r'.\resource\07\JD2019.xlsx')
+        df1 = df[df['商品名称'] =='零基础学Python（全彩版）' ].sort_values('日期')
+        df1 = df1[['北京', '上海', '广州', '成都', '武汉', '沈阳', '西安','日期']]
+        df1 = df1.set_index('日期')
+        df1['全国销量'] = df1.sum(axis=1)
+        df1=df1['2019-01-01':'2019-12-01']
+        print(df1)
+        df1['January'] = df1.iloc[0,7]
+        df1['base'] = df1['全国销量']/df1['January']
+        x= [0,1,2,3,4,5,6,7,8,9,10,11]
+        y1 = df1['全国销量']
+        y2 = df1['base'].values.tolist()
+        fig = plt.figure()
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        ax1 = fig.add_subplot(111)
+        plt.title('2019年全国销量定比分析')
+        plt.xticks(x,['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'])
+        ax1.bar(x,y1,color='blue',label='left',alpha=0.5)
+        ax1.set_ylabel('全国销量（册）')
+        ax2=ax1.twinx()
+        ax2.plot(x,y2,color='r',linestyle='-',marker='D',linewidth=2)
+        for a,b in zip(x,y2):
+            plt.text(a,b+0.02,'%.3f' %b, ha='center', va='bottom',fontsize=9)
+        plt.show()
+    elif testcode == '7_e02_03':
+        df = pd.read_excel(r'.\resource\07\JD2019.xlsx')
+        df1 = df[df['商品名称'] == '零基础学Python（全彩版）'].sort_values('日期')
+        df1 = df1[['北京', '上海', '广州', '成都', '武汉', '沈阳', '西安', '日期']]
+        df1 = df1.set_index('日期')
+        df1['全国销量'] = df1.sum(axis=1)
+        df1['rate'] = ((df1['全国销量']-df1['全国销量'].shift())/df1['全国销量'])*100
+        #print(df1['rate'])
+        df1 = df1['2019-01-01':'2019-12-01']
+        x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        y1 = df1['全国销量']
+        y2 = df1['rate'].values.tolist()
+        #y2 = df1['rate']
+        fig = plt.figure()
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        ax1 = fig.add_subplot(111)
+        plt.title('2019年全国销量及环比增长情况')
+        plt.xticks(x, ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'])
+        ax1.bar(x, y1, color='deepskyblue', label='left')
+        ax1.set_ylabel('全国销量（册）')
+        ax2 = ax1.twinx()
+        ax2.plot(x, y2, color='r', linestyle='-', marker='o',mfc='w', label=u'增长率')
+        fmt = '%.1f%%'
+        yticks = mtick.FormatStrFormatter(fmt)
+        ax2.yaxis.set_major_formatter(yticks)
+        ax2.set_ylim(-100,100)
+        ax2.set_ylabel(u'增长率')
+        for a, b in zip(x, y2):
+            plt.text(a, b + 0.02, '%.3f' % b, ha='center', va='bottom', fontsize=9)
+        plt.subplots_adjust(right=0.8)
+        plt.show()
+    elif testcode == '7_e3':
+        df = pd.read_excel(r'.\resource\07\data11.xls')
+        df1 = df.groupby(['图书编号'])['买家实际支付金额'].sum().reset_index()
+        print(df1)
+        df1 = df1.set_index('图书编号')
+        df1 = df1[u'买家实际支付金额'].copy()
+        df2 = df1.sort_values(ascending=False)
+        plt.rc('font',family='SimHei',size=8)
+        plt.figure('贡献度分析')
+        df2.plot(kind='bar')
+        plt.ylabel(u'销售收入（元）')
+        p = 1.0*df2.cumsum()/df2.sum()
+        print(p)
+        p.plot(color='r', secondary_y=True, style='-o',linewidth=0.5)
+        plt.title('产品贡献度分析')
+        plt.annotate(format(p[9], '.4%'), xy=(9,p[9]),xytext=(9*0.9,p[9]*0.9),
+                     arrowprops=dict(arrowstyle='->',connectionstyle='arc3,rad=.1'))
+        plt.ylabel(u'收入（比例）')
+        plt.show()
+    elif testcode == '7_e4':
+        df = pd.read_excel(r'.\resource\07\成绩表.xlsx')
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        labels = np.array(['语文','数学','英语','物理','化学','生物'])
+        datalength=6
+        #print(df)
+        df.drop(['姓名'],axis=1,inplace=True)
+        #print(df[df['性别'] == '女'].mean())
+        df1 = df[df['性别'] == '女']
+        df1 = df1.drop(['性别'], axis=1)
+        df1m = df1.mean()
+        df2 = df[df['性别'] == '男']
+        df2 = df2.drop(['性别'], axis=1)
+        df2m = df2.mean()
+        df1 = df1m
+        df2 = df2m
+        #df1 = np.array(df[df['性别'] == '女'].mean(),round(2))
+        #df2 = np.array(df[df['性别'] == '男'].mean(), round(2))
+        angles = np.linspace(0,2*np.pi,datalength,endpoint=False)
+        #print(df1m)
+        df1 = np.concatenate((df1,[df1.iloc[0]]))
+        #print(df1)
+        df2 = np.concatenate((df2, [df2.iloc[0]]))
+        angles = np.concatenate((angles,[angles[0]]))
+        plt.polar(angles,df1,'r--',linewidth=2,label='女生')
+        plt.fill(angles, df1, facecolor='r',alpha=0.5)
+        plt.polar(angles, df2, 'b-', linewidth=2, label='男生')
+        plt.fill(angles, df2, facecolor='b', alpha=0.5)
+        plt.thetagrids(range(0,360,60),labels)
+        plt.ylim(0,140)
+        plt.legend(loc='upper right',bbox_to_anchor=(1.2,1.1))
+        plt.show()
+    elif testcode == '7_e5':
+        pd.set_option('display.unicode.east_asian_width', True)
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
+        df_y = pd.read_excel(r'.\resource\07\展现量.xlsx')
+        df_x = pd.read_excel(r'.\resource\07\费用.xlsx')
+        df_y = df_y.set_index('日期')
+        df_x = df_x.set_index('日期')
+        df_x.index = pd.to_datetime(df_x.index)
+        df_x = df_x.resample('D').sum()
+        data = pd.merge(df_x,df_y,on='日期')
+        print(data)
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.xlabel('费用成本（x）')
+        plt.ylabel('广告展现量（y）')
+        plt.scatter(data['费用'], data['展现量'])
+        plt.show()
+    elif testcode == '7_e6':
+        df = pd.read_excel(r'.\resource\07\TB.xls')
+        df1 = df[['订单付款时间','买家实际支付金额']]
+        #df1 = df1.set_index('订单付款时间')
+        #print(df1)
+        df1['付款时间'] = pd.to_datetime(df1['订单付款时间'])
+        #print(df1)
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        df1 = df1.set_index('付款时间')
+        #df_re = df1.resample('A')
+        #df_sum = df_re.sum()
+        #print(df_sum)
+
+        df_y=df1.resample('AS').sum().to_peroid('A')
+        print(df_y)
+        df_q = df1.resample('Q').sum().to_peroid('Q')
+        print(df_q)
+        fig = plt.figure(figsize=(8,3))
+        ax = fig.subplots(1,2)
+        df_y.plot(subplots=True, ax=ax[0])
+        df_q.plot(subplots=True, ax=ax[1])
+        plt.subplots_adjust(top=0.95,bottom=0.2)
+        plt.show()
     else:
         pass
 if __name__ == '__main__':
-    test('7_e2')
+    test('7_e6')
 
 
 
