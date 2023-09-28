@@ -1674,20 +1674,22 @@ def test(testcode):
         plt.show()
     elif testcode == '7_e6':
         df = pd.read_excel(r'.\resource\07\TB.xls')
+        #df = pd.read_excel(r'.\resource\TB2018_4-48.xls')
         df1 = df[['订单付款时间','买家实际支付金额']]
-        #df1 = df1.set_index('订单付款时间')
+        df1 = df1.set_index('订单付款时间')
         #print(df1)
-        df1['付款时间'] = pd.to_datetime(df1['订单付款时间'])
+        #df1['付款时间'] = pd.to_datetime(df1['订单付款时间'])
         #print(df1)
         plt.rcParams['font.sans-serif'] = ['SimHei']
-        df1 = df1.set_index('付款时间')
+        #df1 = df1.set_index('付款时间')
+        print(df1)
         #df_re = df1.resample('A')
         #df_sum = df_re.sum()
         #print(df_sum)
 
-        df_y=df1.resample('AS').sum().to_peroid('A')
+        df_y=df1.resample('AS').sum().to_period('A')
         print(df_y)
-        df_q = df1.resample('Q').sum().to_peroid('Q')
+        df_q = df1.resample('Q').sum().to_period('Q')
         print(df_q)
         fig = plt.figure(figsize=(8,3))
         ax = fig.subplots(1,2)
@@ -1699,6 +1701,7 @@ def test(testcode):
         pass
 if __name__ == '__main__':
     test('7_e6')
+    #test('4_48')
 
 
 
