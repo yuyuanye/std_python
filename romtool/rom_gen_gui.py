@@ -4,6 +4,7 @@ import sys, os
 import datetime
 import time
 import re
+from tkinter.filedialog import *
 
 def oldcode():
     addr_boot = 0x00000000
@@ -165,40 +166,185 @@ def oldcode():
     pass
 
 from tkinter import *
-def rom_gen():
-    print('='*10 + 'genrom' + '='*10)
-    pass
+from tkinter.messagebox import *
+dir_out = '.\out\\'
+file_boot = None
+file_mtd1 = None
+file_mtd2 = None
+file_40m = None
+file_20m = None
 
+def op_boot(o_entry_addr_btld):
+    global  dir_out
+    global file_boot
+    o_entry_addr_btld.delete(0, END)
+    file_boot = askopenfilename(title='选择文件',filetypes=[('bootloader文件',"*.bin")])
+    if file_boot == '':
+        print('do not select bootloader file')
+        pass
+    else:
+        filename = os.path.basename(file_boot)
+        out_name = dir_out + filename
+        shutil.copyfile(file_boot, out_name)
+        o_entry_addr_btld.insert(0,file_boot)
+
+def op_mtd1(o_entry_addr_mtd1):
+    global  dir_out
+    global file_mtd1
+    o_entry_addr_mtd1.delete(0, END)
+    file_mtd1 = askopenfilename(title='选择文件',filetypes=[('生产固件',"*.bin")])
+    if file_mtd1 == '':
+        print('do not select mtd1 file')
+        pass
+    else:
+        filename = os.path.basename(file_mtd1)
+        out_name = dir_out + filename
+        shutil.copyfile(file_mtd1, out_name)
+        o_entry_addr_mtd1.insert(0,file_mtd1)
+def op_mtd2(o_entry_addr_mtd2):
+    global  dir_out
+    global file_mtd2
+    o_entry_addr_mtd2.delete(0, END)
+    file_mtd2 = askopenfilename(title='选择文件',filetypes=[('校准固件',"*.bin")])
+    filename = os.path.basename(file_mtd2)
+    out_name = dir_out + filename
+    shutil.copyfile(file_mtd2, out_name)
+    o_entry_addr_mtd2.insert(0,file_mtd2)
+def op_40m(o_entry_addr_40m):
+    global  dir_out
+    global file_40m
+    o_entry_addr_40m.delete(0, END)
+    file_40m = askopenfilename(title='选择文件',filetypes=[('40m校准数据',"*.bin")])
+    filename = os.path.basename(file_40m)
+    out_name = dir_out + filename
+    shutil.copyfile(file_40m, out_name)
+    o_entry_addr_40m.insert(0,file_40m)
+def op_20m(o_entry_addr_20m):
+    global  dir_out
+    global file_20m
+    o_entry_addr_20m.delete(0, END)
+    file_20m = askopenfilename(title='选择文件',filetypes=[('20m校准数据',"*.bin")])
+    filename = os.path.basename(file_20m)
+    out_name = dir_out + filename
+    shutil.copyfile(file_20m, out_name)
+    o_entry_addr_20m.insert(0,file_20m)
+def rom_gen(win, sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
+    choose = sel_type.get()
+    if choose == 'sta_eth':
+        if file_boot == '' or file_boot == None:
+            showinfo('错误','请选择BootLoader文件')
+        else:
+            print('bootload:'+file_boot)
+            if file_mtd1 == '' or file_mtd1 == None:
+                showinfo('错误', '请选择生产固件')
+            else:
+                print('生产固件:'+file_mtd1)
+                if file_mtd2 == '' or file_mtd2 == None:
+                    showinfo('错误', '请选择校准固件')
+                else:
+                    print('校准固件:'+file_mtd2)
+                    if file_40m == '' or file_40m == None:
+                        showinfo('错误', '请选择40m校准数据')
+                    else:
+                        print('40m校准数据:' + file_40m)
+                        if file_20m == '' or file_20m == None:
+                            showinfo('错误', '请选择20m校准数据')
+                        else:
+                            print('20m校准数据:'+file_20m)
+    if choose == 'sta_usb':
+        if file_40m == '' or file_40m == None:
+            showinfo('错误', '请选择40m校准数据')
+        else:
+            print('40m校准数据:' + file_40m)
+            if file_20m == '' or file_20m == None:
+                showinfo('错误', '请选择20m校准数据')
+            else:
+                print('20m校准数据:' + file_20m)
+        
+    if choose == 'etu':
+        if file_boot == '' or file_boot == None:
+            showinfo('错误','请选择BootLoader文件')
+        else:
+            print('bootload:'+file_boot)
+            if file_mtd1 == '' or file_mtd1 == None:
+                showinfo('错误', '请选择生产固件')
+            else:
+                print('生产固件:'+file_mtd1)
+                if file_mtd2 == '' or file_mtd2 == None:
+                    showinfo('错误', '请选择校准固件')
+                else:
+                    print('校准固件:'+file_mtd2)
 def newgui():
+    global file_boot
+    global dir_out
+    global file_mtd1
+    global file_mtd2
+    global file_40m
+    global file_20m
+
     win = Tk()
-    win.geometry('800x600')
+    win.geometry('800x300')
+    sel_type = StringVar()
+    sel_type.set('sta_eth')
 
-    txt_btld = 'Bootloader基地址:'
-    txt_mtd1 = '分区1基地址:'
-    txt_mtd2 = '分区2(校准固件)基地址:'
-    o_lebel_btld = Label(win, text = txt_btld)
-    o_lebel_btld.grid(row=0,column=0)
+    rd_tp1 = Radiobutton(win, variable=sel_type,value='sta_eth',text='sta-以太网')
+    rd_tp2 = Radiobutton(win, variable=sel_type, value='sta_usb', text='sta-模组')
+    rd_tp3 = Radiobutton(win, variable=sel_type, value='etu', text='etu')
+    rd_tp1.grid(row = 60,column=0)
+    rd_tp2.grid(row=60, column=1)
+    rd_tp3.grid(row=60, column=2)
+    txt_btld = 'Bootloader'
+    txt_mtd1 = '分区1(生产固件)'
+    txt_mtd2 = '分区2(校准固件)'
+    #----------bootload label,entry,button
+    o_lebel_btld = Label(win, text=txt_btld)
+    o_lebel_btld.grid(row=0, column=0)
     addr_btld = 0x00000000
-    o_entry_addr_btld = Entry(win)
-    o_entry_addr_btld.grid(row=0,column=1)
-    o_entry_addr_btld.insert(0,str(addr_btld))
+    o_entry_addr_btld = Entry(win,width=80)
+    o_entry_addr_btld.grid(row=0, column=1)
+    btn_boot = Button(win, text='浏览', command=lambda: op_boot(o_entry_addr_btld))
+    btn_boot.grid(row=0, column=20)
 
+    # ----------mtd1 label,entry,button
     o_lebel_mtd1 = Label(win, text=txt_mtd1)
-    o_lebel_mtd1.grid(row=1,column=0)
-    o_lebel_mtd2 = Label(win, text=txt_mtd2)
-    o_lebel_mtd2.grid(row=2,column=0)
+    o_lebel_mtd1.grid(row=10,column=0)
+    o_entry_addr_mtd1 = Entry(win, width=80)
+    o_entry_addr_mtd1.grid(row=10, column=1)
+    btn_mtd1 = Button(win, text='浏览', command=lambda: op_mtd1(o_entry_addr_mtd1))
+    btn_mtd1.grid(row=10, column=20)
 
-    txt_40m = '40m校准数据基地址:'
-    txt_20m = '20m校准数据基地址:'
+
+    o_lebel_mtd2 = Label(win, text=txt_mtd2)
+    o_lebel_mtd2.grid(row=20,column=0)
+    o_entry_addr_mtd2 = Entry(win, width=80)
+    o_entry_addr_mtd2.grid(row=20, column=1)
+    btn_mtd2 = Button(win, text='浏览', command=lambda: op_mtd2(o_entry_addr_mtd2))
+    btn_mtd2.grid(row=20, column=20)
+
+
+    txt_40m = '40m校准数据'
+    txt_20m = '20m校准数据'
 
     o_lebel_40m = Label(win, text=txt_40m)
-    o_lebel_40m.grid(row=3, column=0)
+    o_lebel_40m.grid(row=30, column=0)
+    o_entry_addr_40m = Entry(win, width=80)
+    o_entry_addr_40m.grid(row=30, column=1)
+    btn_40m = Button(win, text='浏览', command=lambda: op_40m(o_entry_addr_40m))
+    btn_40m.grid(row=30, column=20)
+
 
     o_lebel_20m = Label(win, text=txt_20m)
-    o_lebel_20m.grid(row=4, column=0)
+    o_lebel_20m.grid(row=40, column=0)
+    o_entry_addr_20m = Entry(win, width=80)
+    o_entry_addr_20m.grid(row=40, column=1)
+    btn_20m = Button(win, text='浏览', command=lambda: op_20m(o_entry_addr_20m))
+    btn_20m.grid(row=40, column=20)
 
-    bt_gen = Button(win,text='制作ROM',command=rom_gen)
-    bt_gen.grid(row=10,column=20)
+
+    bt_gen = Button(win,text='制作ROM',width=30,command=lambda:rom_gen(win,sel_type,file_boot, file_mtd1, file_mtd2,file_40m,file_20m))
+    bt_gen.grid(row=90,column=1)
+
+
     win.mainloop()
 if __name__ == '__main__':
     use_method = 2
