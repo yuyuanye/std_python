@@ -173,7 +173,16 @@ file_mtd1 = None
 file_mtd2 = None
 file_40m = None
 file_20m = None
+log_file = None
 
+import time  # 引入time模块
+
+# 格式化成2023-01-02 17:43:11形式
+
+def wr_log(str):
+    global  log_file
+    f_time1 = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    log_file.write(f_time1 + '   '+ str +'\n')
 def op_boot(o_entry_addr_btld):
     global  dir_out
     global file_boot
@@ -228,52 +237,203 @@ def op_20m(o_entry_addr_20m):
     out_name = dir_out + filename
     shutil.copyfile(file_20m, out_name)
     o_entry_addr_20m.insert(0,file_20m)
-def rom_gen(win, sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
+def eth_check(file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
+    if file_boot == '' or file_boot == None:
+        showinfo('错误', '请选择BootLoader文件')
+    else:
+        print('bootload:' + file_boot)
+        if file_mtd1 == '' or file_mtd1 == None:
+            showinfo('错误', '请选择生产固件')
+        else:
+            print('生产固件:' + file_mtd1)
+            if file_mtd2 == '' or file_mtd2 == None:
+                showinfo('错误', '请选择校准固件')
+            else:
+                print('校准固件:' + file_mtd2)
+                if file_40m == '' or file_40m == None:
+                    showinfo('错误', '请选择40m校准数据')
+                else:
+                    print('40m校准数据:' + file_40m)
+                    if file_20m == '' or file_20m == None:
+                        showinfo('错误', '请选择20m校准数据')
+                    else:
+                        print('20m校准数据:' + file_20m)
+def usb_check(file_40m,file_20m):
+    wr_log('usb-检查输入文件')
+    if file_40m == '' or file_40m == None:
+        showinfo('错误', '请选择40m校准数据')
+    else:
+        print('40m校准数据:' + file_40m)
+        if file_20m == '' or file_20m == None:
+            showinfo('错误', '请选择20m校准数据')
+        else:
+            print('20m校准数据:' + file_20m)
+    wr_log('usb-检查输入文件结束')
+def etu_check(file_boot, file_mtd1):
+    if file_boot == '' or file_boot == None:
+        showinfo('错误', '请选择BootLoader文件')
+    else:
+        print('bootload:' + file_boot)
+        if file_mtd1 == '' or file_mtd1 == None:
+            showinfo('错误', '请选择生产固件')
+        else:
+            print('生产固件:' + file_mtd1)
+            '''
+            if file_mtd2 == '' or file_mtd2 == None:
+                showinfo('错误', '请选择校准固件')
+            else:
+                print('校准固件:' + file_mtd2)
+            '''
+def file_check(sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
     choose = sel_type.get()
     if choose == 'sta_eth':
-        if file_boot == '' or file_boot == None:
-            showinfo('错误','请选择BootLoader文件')
-        else:
-            print('bootload:'+file_boot)
-            if file_mtd1 == '' or file_mtd1 == None:
-                showinfo('错误', '请选择生产固件')
-            else:
-                print('生产固件:'+file_mtd1)
-                if file_mtd2 == '' or file_mtd2 == None:
-                    showinfo('错误', '请选择校准固件')
-                else:
-                    print('校准固件:'+file_mtd2)
-                    if file_40m == '' or file_40m == None:
-                        showinfo('错误', '请选择40m校准数据')
-                    else:
-                        print('40m校准数据:' + file_40m)
-                        if file_20m == '' or file_20m == None:
-                            showinfo('错误', '请选择20m校准数据')
-                        else:
-                            print('20m校准数据:'+file_20m)
+        eth_check(file_boot, file_mtd1, file_mtd2,file_40m,file_20m)
     if choose == 'sta_usb':
-        if file_40m == '' or file_40m == None:
-            showinfo('错误', '请选择40m校准数据')
-        else:
-            print('40m校准数据:' + file_40m)
-            if file_20m == '' or file_20m == None:
-                showinfo('错误', '请选择20m校准数据')
-            else:
-                print('20m校准数据:' + file_20m)
-        
+        usb_check(file_40m, file_20m)
     if choose == 'etu':
-        if file_boot == '' or file_boot == None:
-            showinfo('错误','请选择BootLoader文件')
-        else:
-            print('bootload:'+file_boot)
-            if file_mtd1 == '' or file_mtd1 == None:
-                showinfo('错误', '请选择生产固件')
-            else:
-                print('生产固件:'+file_mtd1)
-                if file_mtd2 == '' or file_mtd2 == None:
-                    showinfo('错误', '请选择校准固件')
-                else:
-                    print('校准固件:'+file_mtd2)
+        etu_check(file_boot, file_mtd1)
+def eth_gen(file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
+    timestr = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+    p_file_size = 0x0100000
+    f_name_bin = 'pdt_eth_' + timestr + '.bin'
+
+    path_output = './pdt_eth_' + timestr
+    os.makedirs(path_output)
+    product_file = open(path_output + './' + f_name_bin, 'wb')
+    i = 0
+    byte_val = b'\xff'
+    while i < p_file_size:
+        product_file.write(byte_val)
+        i = i + 1
+    addr_boot = 0x00000000
+    addr_firmware = 0x00002000
+    addr_calil_code = 0x00066000
+    product_file.seek(addr_boot, 0)
+
+    bootloader = open(file_boot, 'rb')
+    for bt in bootloader:
+        product_file.write(bt)
+    bootloader.close()
+    product_file.seek(addr_firmware, 0)
+    f_firmware = file_mtd1
+    firmware = open(f_firmware, 'rb')
+    for bt in firmware:
+        product_file.write(bt)
+    firmware.close()
+    # write cali_code
+    f_calib_code = file_mtd2
+    product_file.seek(addr_calil_code, 0)
+    calib_code = open(f_calib_code, 'rb')
+    for bt in calib_code:
+        product_file.write(bt)
+    calib_code.close()
+
+    addr_cali_data1 = 0x000F0000
+    addr_cali_data2 = 0x000DB000
+    product_file.seek(addr_cali_data1, 0)
+    f_calib_data1 = file_40m
+    f_calib_data2 = file_20m
+    calib_data = open(f_calib_data1, 'rb')
+    for bt in calib_data:
+        product_file.write(bt)
+    calib_data.close()
+
+    product_file.seek(addr_cali_data2, 0)
+    calib_data = open(f_calib_data2, 'rb')
+    for bt in calib_data:
+        product_file.write(bt)
+    calib_data.close()
+
+    product_file.close()
+    showinfo('成功', '制作rom结束')
+    pass
+def usb_gen(file_40m,file_20m):
+    timestr = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+    p_file_size = 0x0100000
+    f_name_bin = 'pdt_usb_' + timestr + '.bin'
+
+    path_output = './pdt_usb_' + timestr
+    os.makedirs(path_output)
+    product_file = open(path_output + './' + f_name_bin, 'wb')
+    i = 0
+    byte_val = b'\xff'
+    while i < p_file_size:
+        product_file.write(byte_val)
+        i = i + 1
+    addr_cali_data1 = 0x000F0000
+    addr_cali_data2 = 0x000DB000
+    product_file.seek(addr_cali_data1, 0)
+    f_calib_data1 = file_40m
+    f_calib_data2 = file_20m
+    calib_data = open(f_calib_data1, 'rb')
+    for bt in calib_data:
+        product_file.write(bt)
+    calib_data.close()
+    product_file.seek(addr_cali_data2, 0)
+    calib_data = open(f_calib_data2, 'rb')
+    for bt in calib_data:
+        product_file.write(bt)
+    calib_data.close()
+    product_file.close()
+    showinfo('成功', '制作rom结束')
+    pass
+def etu_gen(file_boot, file_mtd1):
+
+    timestr = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+    p_file_size = 0x0100000
+    addr_boot = 0x00000000
+    addr_firmware = 0x00002000
+    addr_calil_code = 0x00066000
+    f_name_bin = 'pdt_etu_' + timestr + '.bin'
+
+    path_output = './pdt_etu_' + timestr
+    os.makedirs(path_output)
+    product_file = open(path_output + './' + f_name_bin, 'wb')
+    i = 0
+    byte_val = b'\xff'
+    while i < p_file_size:
+        product_file.write(byte_val)
+        i = i + 1
+    product_file.seek(addr_boot, 0)
+    bootloader = open(file_boot, 'rb')
+    for bt in bootloader:
+        product_file.write(bt)
+    bootloader.close()
+    product_file.seek(addr_firmware, 0)
+    f_calib_code = f_firmware = file_mtd1
+    firmware = open(f_firmware, 'rb')
+    for bt in firmware:
+        product_file.write(bt)
+    firmware.close()
+    # write cali_code
+    product_file.seek(addr_calil_code, 0)
+    calib_code = open(f_calib_code, 'rb')
+    for bt in calib_code:
+        product_file.write(bt)
+    calib_code.close()
+    product_file.close()
+    showinfo('成功', '制作rom结束')
+    pass
+def make_rom(sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
+    addr_boot = 0x00000000
+    addr_firmware = 0x00002000
+    addr_calil_code = 0x00066000
+    addr_cali_data1 = 0x000F0000
+    addr_cali_data2 = 0x000DB000
+    p_file_size = 0x0100000
+    choose = sel_type.get()
+
+    if choose == 'sta_eth':
+        eth_gen(file_boot, file_mtd1, file_mtd2, file_40m, file_20m)
+    if choose == 'sta_usb':
+        usb_gen(file_40m, file_20m)
+    if choose == 'etu':
+        etu_gen(file_boot, file_mtd1)
+
+def rom_gen(win, sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m):
+    file_check(sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m)
+    make_rom(sel_type, file_boot, file_mtd1, file_mtd2,file_40m,file_20m)
+
 def newgui():
     global file_boot
     global dir_out
@@ -281,12 +441,17 @@ def newgui():
     global file_mtd2
     global file_40m
     global file_20m
-
+    global  log_file
     win = Tk()
-    win.geometry('800x300')
+    win.title('6683-ROM-制作工具')
+    win.geometry('800x250')
     sel_type = StringVar()
     sel_type.set('sta_eth')
+    log_name = '.\log.txt'
+    out_name = log_name
+    log_file = open(out_name, 'w+')
 
+    wr_log('write to log file')
     rd_tp1 = Radiobutton(win, variable=sel_type,value='sta_eth',text='sta-以太网')
     rd_tp2 = Radiobutton(win, variable=sel_type, value='sta_usb', text='sta-模组')
     rd_tp3 = Radiobutton(win, variable=sel_type, value='etu', text='etu')
@@ -298,12 +463,12 @@ def newgui():
     txt_mtd2 = '分区2(校准固件)'
     #----------bootload label,entry,button
     o_lebel_btld = Label(win, text=txt_btld)
-    o_lebel_btld.grid(row=0, column=0)
+    o_lebel_btld.grid(row=1, column=0)
     addr_btld = 0x00000000
     o_entry_addr_btld = Entry(win,width=80)
-    o_entry_addr_btld.grid(row=0, column=1)
+    o_entry_addr_btld.grid(row=1, column=1)
     btn_boot = Button(win, text='浏览', command=lambda: op_boot(o_entry_addr_btld))
-    btn_boot.grid(row=0, column=20)
+    btn_boot.grid(row=1, column=20)
 
     # ----------mtd1 label,entry,button
     o_lebel_mtd1 = Label(win, text=txt_mtd1)
