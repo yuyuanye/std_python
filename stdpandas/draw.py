@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 #df = pd.read_excel(r'.\20231009-EBSX12249H00015.xlsx',sheet_name='Sheet2')
 #df = pd.read_excel(r'.\20231009min-EBSX12249H00079.xls',sheet_name='Sheet2')
-df = pd.read_excel(r'.\20231009sec-EBSX12249H00079.xlsx',sheet_name='Sheet2')
+df = pd.read_excel(r'.\79.xlsx',sheet_name='Sheet2')
 plt.rcParams['font.sans-serif'] = ['SimHei']
 
 gps1 = df['gps1'].to_numpy()
