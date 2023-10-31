@@ -1,0 +1,10 @@
+exampleFile=open("d:\\python\\example.txt","w")
+exampleFile.write("0123456789")
+exampleFile.seek(3)
+exampleFile.write("ZUT")
+exampleFile.close()
+exampleFile=open("d:\\python\\example.txt")
+s=exampleFile.read()
+print(s)
+exampleFile.close()
+

@@ -1,0 +1,136 @@
+<html>
+	<head>
+		<title>图标连连看</title>
+	</head>
+	<script src="link.js"></script>
+	<body>
+		<table cellpadding=0 cellspacing=0><tr><td><tbody style="background-color:black;" id="gamecanvas"></tbody></td></tr></table>
+		<script>
+			var width = 14;
+			var height = 14;
+			var eleWidth = 40;
+			var eleHeight = 40;
+			var gameEles = new Array();
+			var linkStack = new Array();
+			var lock = false;
+			function createCanvas(_width,_height){
+				var gc = document.getElementById("gamecanvas");
+				var tempEles;
+				var tempEle;
+				var tempTr;
+				var tempTd;
+				for(var x = 0 ; x < _width ; x++){
+					tempEles = new Array();
+					tempTr = document.createElement("tr");
+					tempTr.style.height = eleHeight+"px";
+					for(var y = 0 ; y < _height ; y++){
+						tempEle = document.createElement("img");
+						tempEle.setAttribute("src","img/"+points[x][y].value+".jpg");
+						tempEle.setAttribute("id","ele"+x+"_"+y);
+						tempEle.style.width = eleWidth+"px";
+						tempEle.style.height = eleHeight+"px";
+						if(x>1 && x<_width-2 && y>1 && y<_height-2){
+							tempEle.onclick = eleChoose;
+						}
+						tempTd = document.createElement("td");
+						tempTd.style.width = eleWidth+"px";
+						tempTd.style.textAlign = "center";
+						tempTd.appendChild(tempEle);
+						tempTr.appendChild(tempTd);
+						gc.appendChild(tempTr);
+						tempEles[y] = tempEle;
+					}
+					gameEles[x] = tempEles;
+				}
+			}
+			function eleChoose(_event){
+				if(lock){
+					return;
+				}
+				lock = true;
+				var event;
+				var p;
+				var path;
+				if(window.event){
+					event = window.event;
+					p = getPoint(event.srcElement.getAttribute("id"));
+				}
+				else{
+					event = _event;
+					p = getPoint(event.target.getAttribute("id"));
+				}
+				if(linkStack.length == 0){
+					choose(p);
+					linkStack.push(p);
+				}
+				else{
+					if(p.x == linkStack[0].x && p.y == linkStack[0].y){
+						unchoose(linkStack.pop());
+						lock = false;
+						return;
+					}
+					choose(p);
+					if(p.value == linkStack[0].value){
+						path = linkPoints(linkStack[0],p);
+						if(path){
+							unchoose(linkStack.pop());
+							unchoose(p);
+							linkSus(path);
+						}
+						else{
+							path = linkPoints(p,linkStack[0]);
+							if(path){
+								unchoose(linkStack.pop());
+								unchoose(p);
+								linkSus(path);
+							}
+							else{
+								unchoose(linkStack.pop());
+								linkStack.push(p);
+							}
+						}
+					}
+					else{
+						unchoose(linkStack.pop());
+						linkStack.push(p);
+					}
+				}
+				lock = false;
+			}
+			
+			function choose(_point){
+				var gameEle = gameEles[_point.x][_point.y];
+				gameEle.style.width = eleWidth-2+"px";
+				gameEle.style.height = eleHeight-2+"px";
+			}
+			
+			function unchoose(_point){
+				var gameEle = gameEles[_point.x][_point.y];
+				gameEle.style.width = eleWidth+"px";
+				gameEle.style.height = eleHeight+"px";
+			}
+			
+			function linkSus(_path){
+				var sourcePoint = _path.shift();
+				var targetPoint = _path.pop();
+				sourcePoint.value = 0;
+				targetPoint.value = 0;
+				var sourceEle = gameEles[sourcePoint.x][sourcePoint.y];
+				var targetEle = gameEles[targetPoint.x][targetPoint.y];
+				sourceEle.onclick=null;
+				sourceEle.setAttribute("src","img/0.jpg");
+				targetEle.onclick=null;
+				targetEle.setAttribute("src","img/0.jpg");
+			}
+			
+			function getPoint(_id){
+				var patterner = /ele(\d+)_(\d+)/;
+				var result = _id.match(patterner);
+				return points[result[1]][result[2]];
+			}
+			
+			createPoints(width,height);
+			createCanvas(width,height);
+		</script>
+	</body>
+</html>
