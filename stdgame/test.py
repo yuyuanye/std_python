@@ -230,10 +230,132 @@ def test_code(chapter):
                 return(f(x-1)+x*x)
         print(f(5))
         '''
+        '''
         import fibo
         fibo.fib(1000)
         print(fibo.fib2(100))
         print(fibo.add(2,3))
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt')
+        #print(hellofile)
+        filecontent = hellofile.read()
+        print(filecontent)
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt')
+        filecontent = ''
+        idx = 0
+        while True:
+            fragment = hellofile.read(3)
+            idx +=1
+            print(idx,fragment)
+            if fragment == '':
+                break
+                print('='*10)
+            filecontent +=fragment
+        hellofile.close()
+        print(filecontent)
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt')
+        filecontent = ''
+        idx = 0
+        while True:
+            fragment = hellofile.read(3)
+            idx += 1
+            print(idx, fragment)
+            if fragment == '':
+                break
+                print('=' * 10)
+            filecontent += fragment
+        hellofile.close()
+        print(filecontent)
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt')
+        filecontent = ''
+        idx = 0
+        while True:
+            line1 = hellofile.readline()
+            idx += 1
+            print(idx, line1)
+            if line1 == '':
+                break
+                print('=' * 10)
+            filecontent += line1
+        hellofile.close()
+        print(filecontent)
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt')
+        filecontent = hellofile.readlines()
+        print(filecontent,'\n','='*10)
+        for line in filecontent:
+            print(line)
+        hellofile.close()
+        '''
+        #hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt','w')
+        #filecontent = hellofile.read()
+        #hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt')
+        #filecontent = hellofile.read()
+        #print(len(filecontent))
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt', 'w')
+        hellofile.write('first line.\nsecond line.\n')
+        hellofile.close()
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt', 'a')
+        hellofile.write('third line\n')
+        hellofile.close()
+        '''
+        '''
+        def copy_file(old_file,new_file):
+            old_handle = open(old_file,'r')
+            new_handle = open(new_file,'w')
+            while True:
+                filecontent = old_handle.read(50)
+                if filecontent == '':
+                    break
+                new_handle.write(filecontent)
+            old_handle.close()
+            new_handle.close()
+            return
+        copy_file('d:\\std-python\\hubcode\\std_python\\stdgame\\hello.txt',
+                  'd:\\std-python\\hubcode\\std_python\\stdgame\\dest.txt')
+        '''
+        '''
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\wlines.txt', 'w')
+        list02 = ['name','good','ok','what do you do?']
+        hellofile.writelines(list02)
+        hellofile.close()
+        '''
+        '''
+        import os
+        myarray=[]
+        hellofile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\map.txt','w')
+        hellofile.write('0,0,0,3,3,0,0\n')
+        hellofile.write('3,3,0,3,4,0,0\n')
+        hellofile.write('1,3,3,2,3,3,0\n')
+        hellofile.write('4,2,0,3,3,3,0\n')
+        hellofile.write('3,3,3,0,3,3,0\n')
+        hellofile.write('3,3,3,0,0,3,0\n')
+        hellofile.write('3,0,0,0,0,0,0\n')
+        hellofile.close()
+        '''
+        import os
+        mapfile = open('d:\\std-python\\hubcode\\std_python\\stdgame\\map.txt','r')
+        maparray = []
+        while True:
+            line = mapfile.readline()
+            if line == '':
+                break
+            line = line.replace('\n','')
+            maparray.append(line.split(','))
+        mapfile.close()
+        print(maparray)
+        print(type(maparray))
         pass
     else:
         pass
