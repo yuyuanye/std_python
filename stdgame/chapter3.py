@@ -248,7 +248,26 @@ def main(case_num):
             print('player',n, end=':')
             print(hand)
             n=n+1
+    elif case_num == '10':
+        from itertools import combinations
+        from itertools import permutations
+        test_data = ['a','b','c','d']
+        '''
+        print('2个元素的组合：')
+        for i in combinations(test_data, 2):
+            print(i, end=',')
+        print('\n3个元素的组合：')
+        for i in combinations(test_data, 3):
+            print(i, end=',')
+        '''
+        print('2个元素的排列：')
+        for i in permutations(test_data, 2):
+            print(i, end=',')
+        print('\n3个元素的排列：')
+        for i in permutations(test_data, 3):
+            print(i, end=',')
+        pass
 if __name__ == '__main__':
-    main('9')
+    main('10')
 
 
